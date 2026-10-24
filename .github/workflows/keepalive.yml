@@ -1,7 +1,9 @@
 name: Keep demo alive
 
 # The hosted demo and its free database must stay up until the end of judging (15 Dec 2026).
-# Set the repository variable DEMO_URL (for example https://shelfready.vercel.app) to enable.
+# Set repository variables to enable:
+#   FRONTEND_URL (for example https://shelf-ready.vercel.app)
+#   BACKEND_URL  (for example https://api.example.com)
 on:
   schedule:
     - cron: "0 */12 * * *"
@@ -11,9 +13,13 @@ permissions:
   contents: read
 
 jobs:
-  ping:
-    if: ${{ vars.DEMO_URL != '' }}
+  ping-frontend:
+    if: ${{ vars.FRONTEND_URL != '' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Ping health endpoint
-        run: curl --fail --silent --show-error --max-time 30 "${{ vars.DEMO_URL }}/api/health"
+      - run: curl --fail --silent --show-error --max-time 30 "${{ vars.FRONTEND_URL }}/api/health"
+  ping-backend:
+    if: ${{ vars.BACKEND_URL != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl --fail --silent --show-error --max-time 30 "${{ vars.BACKEND_URL }}/health"
