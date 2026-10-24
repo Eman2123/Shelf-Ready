@@ -17,63 +17,52 @@ How it relates to PayPal's own Agent Ready and Store Sync: those get a catalog i
 
 ## Status
 
-Foundation commit. The folder structure, shared contracts (Zod), database schema, stubs for every module, CI and safety-test placeholders are in place. Feature modules are being built in tiers; see `docs/` for the plan.
+Day 1 of the build (PRD v3.2 in `docs/`). The FastAPI backend skeleton and the Next.js UI shell are in place; feature modules are built by priority (P0, P1, P2). `legacy-ts/` holds the earlier TypeScript foundation as a porting reference only.
 
 ## Stack
 
-Next.js (App Router) and TypeScript, Tailwind, AG Grid, Postgres with Drizzle, Vercel AI SDK with an OpenAI-compatible provider switch (AIML API or Gemini), Model Context Protocol SDK, PayPal sandbox REST API, Vitest, GitHub Actions with CodeQL.
+Backend: FastAPI (Python 3.11+), Pydantic v2, SQLAlchemy 2 + Alembic on Postgres, httpx, OpenAI-compatible SDK for AI (AIML API, Gemini backup), official `mcp` Python SDK for the store MCP, PayPal sandbox REST API, pytest, ruff, GitHub Actions with CodeQL.
+Frontend: Next.js 15 (App Router), TypeScript, Tailwind, AG Grid. UI only, no business logic.
 
 ## Getting started
 
-Requires Node 20 or newer.
+Backend (Python 3.11+):
 
 ```bash
-npm install
-cp .env.example .env.local   # DEMO_MODE=true needs no other secrets
-npm run dev                  # http://localhost:3000
+cd backend
+python -m venv .venv && source .venv/bin/activate   # Windows: .\.venv\Scripts\Activate.ps1
+pip install -e ".[dev]"
+pytest
+uvicorn app.main:app --reload                        # http://127.0.0.1:8000/health
 ```
 
-Scripts: `dev`, `build`, `lint`, `typecheck`, `test`, `format`, `db:generate`, `db:migrate`, `seed:demo`, `bench:run`, `bench:record`.
+Frontend (Node 20+):
 
-Keep API keys server-side only. Never prefix a secret with `NEXT_PUBLIC_`.
+```bash
+cd frontend
+npm install
+npm run dev                                          # http://localhost:3000
+```
+
+Copy `.env.example` to `.env` and fill the PayPal sandbox values. Keep API keys server-side only.
 
 ## Repository layout
 
 ```
-src/app              dashboard, demo store, API routes, /mcp, /.well-known/agent-store.json
-src/lib/contracts    shared Zod schemas: the contracts between modules
-src/lib/paypal       PayPal sandbox client (Orders, Catalog, Webhooks)
-src/lib/import       CSV and feed importers
-src/lib/connector    store scan and normalisation
-src/lib/audit        scoring rules and AI rubric
-src/lib/fixes        fix proposals, provenance, rollback
-src/lib/agent-ready  Catalog patch, JSON-LD, agent manifest
-src/lib/mcp          store MCP server tools
-src/lib/policy       deterministic policy engine
-src/lib/keys         agent keys, scopes, budgets, kill switch
-src/lib/orders       guarded order creation
-src/lib/approvals    signed single-use approval links
-src/lib/webhooks     verified, idempotent webhook handling
-src/lib/agent        buyer agent (before and after modes)
-src/lib/benchmark    the 10 fixed benchmark tasks
-src/lib/ai           provider switch
-src/db               Drizzle schema
-src/components/ui    shared UI kit
-scripts              seed-demo, run-benchmark, record-run
-tests                contract and safety tests
+backend/app/main.py        FastAPI app (routers, /mcp mount, /.well-known)
+backend/app/contracts/     Pydantic contracts between modules
+backend/app/services/      paypal, policy, keys, orders, approvals, webhooks (P1)
+                           importer, connector, audit, fixes, agent_ready, mcp_store (P2)
+                           agent, benchmark, fixtures (P3); receipt, ai (shared)
+backend/app/scripts/       seed_demo, run_benchmark, record_run, verify_receipt
+backend/tests/             pytest
+frontend/src/app/          landing, dashboard screens, demo-store
+frontend/src/components/   shared UI kit
+frontend/src/lib/api/      generated API types
+docs/                      PRD v3.2, ADRs, archive of older versions
+legacy-ts/                 old TS foundation, reference only
 ```
 
-## Safety principles
-
-- AI helps, rules decide. Only deterministic code can create or capture an order.
-- AI never invents product facts; missing data becomes a question to the seller.
-- Product text is untrusted input and is never executed as instructions.
-- Every agent action and policy decision is logged.
-
-## Tools used
-
-AI model access goes through the Vercel AI SDK with an OpenAI-compatible provider (AIML API, or Gemini as an alternative). The model is used for the audit rubric, fix extraction (structured output validated by Zod), and the buyer agent. PayPal Agent Toolkit and MCP are used by the buyer agent and as a read-only verifier. This section is finalised before submission.
-
-## Licence
+## License
 
 MIT. See `LICENSE`.

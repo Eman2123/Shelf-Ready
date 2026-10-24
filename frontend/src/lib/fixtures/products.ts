@@ -13,7 +13,8 @@ const raw: Product[] = [
     storeId: STORE_ID,
     paypalProductId: null,
     name: "Tidewell Classic Tee",
-    description: "Soft tee, great for everyday. Comes in lots of colors and sizes! Call us to confirm your size.",
+    description:
+      "Soft tee, great for everyday. Comes in lots of colors and sizes! Call us to confirm your size.",
     priceCents: null,
     priceText: "from $20",
     currency: "USD",

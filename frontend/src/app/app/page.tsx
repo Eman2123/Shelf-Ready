@@ -14,7 +14,9 @@ export default function DashboardHome() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-12">
       <h1 className="text-2xl font-bold">Dashboard (foundation)</h1>
-      <p className="mt-2">Demo mode. Nothing here is built yet; this list is the build checklist.</p>
+      <p className="mt-2">
+        Demo mode. Nothing here is built yet; this list is the build checklist.
+      </p>
       <ul className="mt-6 list-disc pl-6">
         {screens.map((s) => (
           <li key={s.name}>
