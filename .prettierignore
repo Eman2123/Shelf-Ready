@@ -1,0 +1,5 @@
+.next
+node_modules
+drizzle
+package-lock.json
+docs/PRD.pdf

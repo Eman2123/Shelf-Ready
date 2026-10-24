@@ -1,0 +1,19 @@
+name: Keep demo alive
+
+# The hosted demo and its free database must stay up until the end of judging (15 Dec 2026).
+# Set the repository variable DEMO_URL (for example https://shelfready.vercel.app) to enable.
+on:
+  schedule:
+    - cron: "0 */12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    if: ${{ vars.DEMO_URL != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping health endpoint
+        run: curl --fail --silent --show-error --max-time 30 "${{ vars.DEMO_URL }}/api/health"
