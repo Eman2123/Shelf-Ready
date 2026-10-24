@@ -1,0 +1,31 @@
+[project]
+name = "shelf-ready-backend"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi",
+  "uvicorn[standard]",
+  "pydantic>=2",
+  "pydantic-settings",
+  "httpx",
+  "sqlalchemy>=2",
+  "alembic",
+  "psycopg[binary]",
+  "openai",
+  "mcp",
+  "structlog",
+  "slowapi",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-asyncio", "respx", "ruff", "mypy", "pip-audit"]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
