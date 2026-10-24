@@ -17,7 +17,7 @@ How it relates to PayPal's own Agent Ready and Store Sync: those get a catalog i
 
 ## Status
 
-Day 1 of the build (PRD v3.2 in `docs/`). The FastAPI backend skeleton and the Next.js UI shell are in place; feature modules are built by priority (P0, P1, P2). `legacy-ts/` holds the earlier TypeScript foundation as a porting reference only.
+Day 1 of the build (final PRD: `docs/Shelf_Ready_PRD_FINAL.pdf`). The FastAPI backend skeleton and the Next.js UI shell are in place; feature modules are built by priority (P0, P1, P2). `legacy-ts/` holds the earlier TypeScript foundation as a porting reference only.
 
 ## Stack
 
@@ -59,7 +59,7 @@ backend/tests/             pytest
 frontend/src/app/          landing, dashboard screens, demo-store
 frontend/src/components/   shared UI kit
 frontend/src/lib/api/      generated API types
-docs/                      PRD v3.2, ADRs, archive of older versions
+docs/                      Shelf_Ready_PRD_FINAL (pdf + md), ADRs, archive/ of older versions
 legacy-ts/                 old TS foundation, reference only
 ```
 
