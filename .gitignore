@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+next-env.d.ts
+
+# build and test output
+coverage/
+*.tsbuildinfo
+playwright-report/
+test-results/
+
+# env files (never commit secrets; keep .env.example only)
+.env
+.env.*
+!.env.example
+
+# logs and OS files
+*.log
+.DS_Store
+
+# local tooling
+.vercel/

@@ -1,0 +1,27 @@
+# Replace the placeholders with real GitHub usernames of P1, P2 and P3 (one review required).
+# P1 = Money and Platform, P2 = Data and Agent-ready, P3 = Agents, UI and Story
+/src/lib/paypal/        @P1-USERNAME
+/src/lib/policy/        @P1-USERNAME
+/src/lib/keys/          @P1-USERNAME
+/src/lib/orders/        @P1-USERNAME
+/src/lib/approvals/     @P1-USERNAME
+/src/lib/webhooks/      @P1-USERNAME
+/src/app/api/webhooks/  @P1-USERNAME
+/.github/               @P1-USERNAME
+
+/src/lib/import/        @P2-USERNAME
+/src/lib/connector/     @P2-USERNAME
+/src/lib/audit/         @P2-USERNAME
+/src/lib/fixes/         @P2-USERNAME
+/src/lib/agent-ready/   @P2-USERNAME
+/src/lib/mcp/           @P2-USERNAME
+/src/db/                @P2-USERNAME
+
+/src/lib/agent/         @P3-USERNAME
+/src/lib/benchmark/     @P3-USERNAME
+/src/lib/ai/            @P3-USERNAME
+/src/components/        @P3-USERNAME
+/src/app/demo-store/    @P3-USERNAME
+
+# Contracts are shared: any of the three can approve, but all three must be told.
+/src/lib/contracts/     @P1-USERNAME @P2-USERNAME @P3-USERNAME
