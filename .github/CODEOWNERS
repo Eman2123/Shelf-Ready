@@ -1,28 +1,28 @@
-# Two-person team. Replace A-USERNAME and B-USERNAME with real GitHub usernames (one review required).
+# All paths are owned by @Eman2123 for now. Change per-person owners later (A = Money, Audit and Platform, B = Agents, Store and UI).
 # A = Money, Audit and Platform, B = Agents, Store and UI
 
-/backend/app/services/paypal/     @A-USERNAME
-/backend/app/services/policy/     @A-USERNAME
-/backend/app/services/keys/       @A-USERNAME
-/backend/app/services/orders/     @A-USERNAME
-/backend/app/services/approvals/  @A-USERNAME
-/backend/app/services/webhooks/   @A-USERNAME
-/backend/app/services/audit/      @A-USERNAME
-/backend/app/services/fixes/      @A-USERNAME
-/backend/app/db/                  @A-USERNAME
-/.github/                         @A-USERNAME
-/docker-compose.yml               @A-USERNAME
+/backend/app/services/paypal/     @Eman2123
+/backend/app/services/policy/     @Eman2123
+/backend/app/services/keys/       @Eman2123
+/backend/app/services/orders/     @Eman2123
+/backend/app/services/approvals/  @Eman2123
+/backend/app/services/webhooks/   @Eman2123
+/backend/app/services/audit/      @Eman2123
+/backend/app/services/fixes/      @Eman2123
+/backend/app/db/                  @Eman2123
+/.github/                         @Eman2123
+/docker-compose.yml               @Eman2123
 
-/backend/app/services/importer/    @B-USERNAME
-/backend/app/services/connector/   @B-USERNAME
-/backend/app/services/agent_ready/ @B-USERNAME
-/backend/app/services/mcp_store/   @B-USERNAME
-/backend/app/services/agent/       @B-USERNAME
-/backend/app/services/benchmark/   @B-USERNAME
-/backend/app/services/fixtures/    @B-USERNAME
-/frontend/                         @B-USERNAME
+/backend/app/services/importer/    @Eman2123
+/backend/app/services/connector/   @Eman2123
+/backend/app/services/agent_ready/ @Eman2123
+/backend/app/services/mcp_store/   @Eman2123
+/backend/app/services/agent/       @Eman2123
+/backend/app/services/benchmark/   @Eman2123
+/backend/app/services/fixtures/    @Eman2123
+/frontend/                         @Eman2123
 
 # Shared: contracts, the AI provider switch and the receipt hash chain.
-/backend/app/contracts/           @A-USERNAME @B-USERNAME
-/backend/app/services/receipt/    @A-USERNAME @B-USERNAME
-/backend/app/services/ai/         @A-USERNAME @B-USERNAME
+/backend/app/contracts/           @Eman2123 @Eman2123
+/backend/app/services/receipt/    @Eman2123 @Eman2123
+/backend/app/services/ai/         @Eman2123 @Eman2123
