@@ -20,7 +20,14 @@ export default function DashboardHome() {
       <ul className="mt-6 list-disc pl-6">
         {screens.map((s) => (
           <li key={s.name}>
-            {s.name} - Tier {s.tier} - owner {s.owner}
+            {"href" in s ? (
+              <a className="underline" href={s.href}>
+                {s.name}
+              </a>
+            ) : (
+              s.name
+            )}{" "}
+            - Tier {s.tier} - owner {s.owner}
           </li>
         ))}
       </ul>
