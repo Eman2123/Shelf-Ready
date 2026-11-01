@@ -2,7 +2,7 @@
 const screens = [
   { name: "Connect and import", owner: "P2", tier: 1 },
   { name: "Audit grid", owner: "P2", tier: 1 },
-  { name: "Fix review", owner: "P3 (data from P2)", tier: 1 },
+  { name: "Fix review", owner: "P3 (data from P2)", tier: 1, href: "/app/fix-review" },
   { name: "Policy", owner: "P1", tier: 1 },
   { name: "Agent keys", owner: "P1", tier: 1 },
   { name: "Agent test", owner: "P3", tier: 1 },

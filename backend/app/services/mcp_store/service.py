@@ -17,6 +17,8 @@ from app.contracts import (
     GetProductInput,
     GuardedOrderRequest,
     GuardedOrderResult,
+    KeyScope,
+    KeyVerification,
     PolicyRules,
     Product,
     Quote,
@@ -29,6 +31,8 @@ from app.contracts import (
 QUOTE_TTL = timedelta(minutes=10)
 
 GuardedOrderFn = Callable[[GuardedOrderRequest], GuardedOrderResult]
+# A's verify_key(key) plugs in here. None = demo mode, no key check (read-only demo role).
+KeyVerifierFn = Callable[[str], KeyVerification]
 
 
 def _variant(product: Product, sku: str | None) -> Variant | None:
@@ -54,11 +58,13 @@ class StoreService:
         rules: PolicyRules,
         guarded_order: GuardedOrderFn | None = None,
         clock: Callable[[], datetime] = lambda: datetime.now(UTC),
+        verify_key: KeyVerifierFn | None = None,
     ) -> None:
         self.products = products
         self.rules = rules
         self.guarded_order = guarded_order
         self.clock = clock
+        self.verify_key = verify_key
         self.quotes: dict[str, Quote] = {}
 
     # --- quotes -------------------------------------------------------------------------
@@ -134,7 +140,23 @@ class StoreService:
     def get_policy(self) -> dict[str, Any]:
         return self.rules.model_dump(mode="json")
 
+    def _key_error(self, agent_key: str) -> dict[str, Any] | None:
+        """Key check on every order call: unknown, revoked, expired or missing the order scope."""
+        if self.verify_key is None:
+            return None
+        result = self.verify_key(agent_key)
+        if not result.ok:
+            return {"error": result.reason.value}
+        if KeyScope.ORDER not in result.agent.scopes:
+            return {"error": "KEY_SCOPE_MISSING"}
+        return None
+
     def create_order(self, args: CreateOrderInput, agent_key: str) -> dict[str, Any]:
+        if not agent_key.strip():
+            return {"error": "KEY_UNKNOWN"}  # no key sent: refuse cleanly, never crash
+        key_error = self._key_error(agent_key)
+        if key_error is not None:
+            return key_error
         for item in args.items:
             err = self.check_quote(item.quote_id, item.product_id, item.quantity)
             if err is not None:
