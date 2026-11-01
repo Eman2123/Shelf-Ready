@@ -125,3 +125,98 @@ def test_mcp_server_exposes_exactly_the_four_tools(svc):
     server = build_server(svc)
     tools = asyncio.run(server.list_tools())
     assert sorted(t.name for t in tools) == sorted(STORE_TOOL_NAMES)
+
+
+# --- Day 3: key checks plug in, and the real MCP transport works end to end -----------------
+from app.contracts import (
+    KeyFailureReason,
+    KeyLimits,
+    KeyRejected,
+    KeyScope,
+    KeyVerified,
+    VerifiedAgent,
+)
+
+
+def _agent(scopes):
+    return KeyVerified(
+        agent=VerifiedAgent(
+            agent_id="a1",
+            key_id="k1",
+            store_id="store_demo",
+            scopes=scopes,
+            limits=KeyLimits(
+                per_order_max_cents=5000,
+                per_day_budget_cents=20000,
+                requests_per_minute=30,
+                allowed_categories=[],
+                expires_at=None,
+            ),
+        )
+    )
+
+
+def _svc_with_key(result):
+    products = {k: v.model_copy(deep=True) for k, v in PUBLISHED_PRODUCTS.items()}
+    return StoreService(
+        products, DEFAULT_POLICY, fake_guarded, Clock(), verify_key=lambda k: result
+    )
+
+
+def test_revoked_key_never_reaches_the_order_backend():
+    svc = _svc_with_key(KeyRejected(reason=KeyFailureReason.KEY_REVOKED))
+    q = _quote_for(svc, "prod_tote")
+    assert _order(svc, "prod_tote", q)["error"] == "KEY_REVOKED"
+
+
+def test_key_without_order_scope_is_refused():
+    svc = _svc_with_key(_agent([KeyScope.READ, KeyScope.QUOTE]))
+    q = _quote_for(svc, "prod_tote")
+    assert _order(svc, "prod_tote", q)["error"] == "KEY_SCOPE_MISSING"
+
+
+def test_key_with_order_scope_can_order():
+    svc = _svc_with_key(_agent([KeyScope.READ, KeyScope.QUOTE, KeyScope.ORDER]))
+    q = _quote_for(svc, "prod_tote")
+    assert _order(svc, "prod_tote", q)["status"] == "CREATED"
+
+
+def test_mcp_client_completes_a_purchase_without_html(svc):
+    """An MCP client discovers the tools and buys, with no HTML parsing (PRD M5 done-when)."""
+    from mcp.client.client import Client
+
+    async def run():
+        async with Client(build_server(svc)) as client:
+            tools = {t.name for t in (await client.list_tools()).tools}
+            assert tools == set(STORE_TOOL_NAMES)
+            found = await client.call_tool("search_products", {"query": "tote"})
+            pid = found.structured_content["result"][0]["product_id"]
+            prod = await client.call_tool("get_product", {"product_id": pid})
+            quote_id = prod.structured_content["quotes"][0]["quote_id"]
+            order = await client.call_tool(
+                "create_order",
+                {
+                    "items": [{"product_id": pid, "quantity": 1, "quote_id": quote_id}],
+                    "ship_to_country": "US",
+                    "idempotency_key": "idem-mcp-01",
+                    "agent_key": "demo-key",
+                },
+            )
+            return order.structured_content
+
+    assert asyncio.run(run())["status"] == "CREATED"
+
+
+def test_missing_key_is_a_clean_error(svc):
+    q = _quote_for(svc, "prod_tote")
+    result = svc.create_order(
+        CreateOrderInput.model_validate(
+            {
+                "items": [{"product_id": "prod_tote", "quantity": 1, "quote_id": q}],
+                "ship_to_country": "US",
+                "idempotency_key": "idem-0002",
+            }
+        ),
+        agent_key="",
+    )
+    assert result == {"error": "KEY_UNKNOWN"}

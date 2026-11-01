@@ -33,6 +33,8 @@ export const FixProposalSchema = z.object({
   newValue: z.unknown(),
   status: FixStatus,
   evidence: FixEvidenceSchema.nullable(),
+  /** why a proposal was blocked (shown in the red lane); mirrors backend FixRecord */
+  rejectionReason: z.string().nullable().optional(),
 });
 
 export const FixVersionSchema = z.object({
