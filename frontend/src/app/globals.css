@@ -1,17 +1,25 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #14213d;
+/* Swiss design tokens. One red, no radius, no shadows. */
+@theme {
+  --color-ink: #111111;
+  --color-paper: #ffffff;
+  --color-signal: #e4002b;
+  --color-ok: #0a7a3e;
+  --color-wait: #8a5a00;
+  --color-mute: #555555;
+  --color-hilite: #ffe45c;
+  --font-sans: "Archivo", ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family:
-    system-ui,
-    -apple-system,
-    "Segoe UI",
-    Roboto,
-    sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-signal);
+  outline-offset: 2px;
 }

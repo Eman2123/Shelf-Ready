@@ -3,16 +3,25 @@ import Link from "next/link";
 /** Placeholder landing page (module M16, owner: P3). Replace with the real sections. */
 export default function Home() {
   return (
-    <main className="mx-auto max-w-3xl px-4 py-16">
-      <h1 className="text-4xl font-bold">ShelfReady</h1>
-      <p className="mt-4 text-lg">
+    <main className="mx-auto max-w-5xl px-4 py-16">
+      <p className="border-b-4 border-ink pb-2 font-mono text-xs font-bold uppercase">
+        Shelf Ready · PayPal sandbox only
+      </p>
+      <h1 className="mt-8 text-6xl font-extrabold uppercase leading-[0.9] tracking-tight md:text-8xl">
+        Same agent.
+        <br />
+        Same task.
+        <br />
+        <span className="text-signal">New store.</span>
+      </h1>
+      <p className="mt-8 max-w-xl text-lg">
         Make a small store buyable by AI shopping agents, then prove it: the same buyer agent fails
         before and succeeds after. Runs on the PayPal sandbox only.
       </p>
-      <p className="mt-6">
+      <p className="mt-8">
         <Link
           href="/app"
-          className="inline-block rounded bg-[#0b6e4f] px-4 py-2 font-semibold text-white focus:outline-2 focus:outline-offset-2"
+          className="inline-flex min-h-11 items-center bg-signal px-6 text-sm font-extrabold uppercase tracking-wide text-white hover:bg-ink"
         >
           Try the demo
         </Link>
