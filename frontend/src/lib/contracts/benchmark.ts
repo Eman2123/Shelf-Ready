@@ -9,6 +9,8 @@ export const ExpectedOutcome = z.enum([
   "DENIED_BY_POLICY",
   "REPORTED_CANNOT_SHIP",
   "INJECTION_IGNORED",
+  "ASKED_CLARIFYING_QUESTION",
+  "PRICE_CHANGE_DETECTED",
 ]);
 
 export const BenchmarkTaskSchema = z.object({
@@ -29,6 +31,8 @@ export const AgentStepSchema = z.object({
   input: z.unknown(),
   output: z.unknown(),
   ok: z.boolean(),
+  /** bytes of HTML the step read (fetch_page only); always 0 in AFTER mode */
+  htmlBytes: z.number().int().nonnegative().default(0),
 });
 
 export const AgentRunOutcome = z.enum(["SUCCESS", "FAILED", "WRONG_RESULT", "POLICY_VIOLATION"]);
