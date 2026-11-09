@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Button, SampleBadge, StatusTag, type StatusKind } from "@/components/ui";
 import { sampleRuns, sampleTasks, totals, type RecordedRun } from "@/lib/fixtures/agent-runs";
 
-const OUTCOME_STYLE: Record<RecordedRun["outcome"], string> = {
-  SUCCESS: "bg-green-100 text-green-900",
-  FAILED: "bg-red-100 text-red-900",
-  WRONG_RESULT: "bg-red-100 text-red-900",
-  POLICY_VIOLATION: "bg-red-100 text-red-900",
+const OUTCOME_KIND: Record<RecordedRun["outcome"], StatusKind> = {
+  SUCCESS: "ok",
+  FAILED: "blocked",
+  WRONG_RESULT: "blocked",
+  POLICY_VIOLATION: "blocked",
 };
 
 const fmt = (n: number) => n.toLocaleString("en-US");
@@ -16,36 +17,36 @@ const show = (v: unknown) => (typeof v === "string" ? v : JSON.stringify(v));
 function Lane({ run, visible }: { run: RecordedRun; visible: number }) {
   const t = totals(run);
   const done = visible >= run.steps.length;
+  const before = run.mode === "BEFORE";
   return (
     <section
       aria-label={`${run.mode} run`}
-      className={`rounded border p-4 ${run.mode === "BEFORE" ? "border-red-300" : "border-green-400"}`}
+      className={`border-t-8 pt-4 ${before ? "border-signal" : "border-ok"}`}
     >
-      <header className="flex items-center justify-between gap-2">
-        <h2 className="text-lg font-semibold">
-          {run.mode === "BEFORE" ? "BEFORE · reads the web page" : "AFTER · uses the store MCP"}
-        </h2>
-        {done && (
-          <span className={`rounded px-2 py-0.5 text-sm font-medium ${OUTCOME_STYLE[run.outcome]}`}>
-            {run.outcome}
+      <header className="flex flex-wrap items-baseline justify-between gap-2">
+        <h2 className="text-3xl font-extrabold uppercase tracking-tight">
+          {before ? "Before" : "After"}
+          <span className="ml-3 text-sm font-normal normal-case tracking-normal text-mute">
+            {before ? "reads the web page" : "uses the store MCP"}
           </span>
-        )}
+        </h2>
+        {done && <StatusTag kind={OUTCOME_KIND[run.outcome]}>{run.outcome}</StatusTag>}
       </header>
 
-      <dl className="mt-3 grid grid-cols-3 gap-2 text-sm">
-        <div>
-          <dt className="text-gray-600">Tool calls</dt>
-          <dd className="font-mono text-base">{done ? t.toolCalls : visible}</dd>
+      <dl className="mt-4 grid grid-cols-3 border-y border-ink text-sm">
+        <div className="border-r border-ink py-2 pr-3">
+          <dt className="text-xs font-semibold uppercase text-mute">Tool calls</dt>
+          <dd className="font-mono text-2xl font-bold">{done ? t.toolCalls : visible}</dd>
         </div>
-        <div>
-          <dt className="text-gray-600">HTML bytes read</dt>
-          <dd className="font-mono text-base">
+        <div className="border-r border-ink px-3 py-2">
+          <dt className="text-xs font-semibold uppercase text-mute">HTML bytes</dt>
+          <dd className="font-mono text-2xl font-bold">
             {fmt(run.steps.slice(0, visible).reduce((s, x) => s + x.htmlBytes, 0))}
           </dd>
         </div>
-        <div>
-          <dt className="text-gray-600">Duration</dt>
-          <dd className="font-mono text-base">
+        <div className="py-2 pl-3">
+          <dt className="text-xs font-semibold uppercase text-mute">Duration</dt>
+          <dd className="font-mono text-2xl font-bold">
             {done ? `${(run.durationMs / 1000).toFixed(1)} s` : "…"}
           </dd>
         </div>
@@ -53,26 +54,24 @@ function Lane({ run, visible }: { run: RecordedRun; visible: number }) {
 
       <ol className="mt-4 space-y-2" aria-live="polite">
         {run.steps.slice(0, visible).map((s) => (
-          <li key={s.index} className="rounded border bg-gray-50 p-2 text-sm">
-            <div className="flex items-center justify-between">
-              <span className="font-mono font-semibold">
+          <li key={s.index} className="border border-ink p-3 text-sm">
+            <div className="flex items-center justify-between gap-2">
+              <span className="font-mono font-bold">
                 {s.index + 1}. {s.tool}
               </span>
-              <span className={s.ok ? "text-green-800" : "text-red-800"}>
-                {s.ok ? "ok" : "unsafe"}
-              </span>
+              <StatusTag kind={s.ok ? "ok" : "blocked"}>{s.ok ? "ok" : "unsafe"}</StatusTag>
             </div>
-            <p className="mt-1 break-words font-mono text-xs text-gray-700">in: {show(s.input)}</p>
+            <p className="mt-1 break-words font-mono text-xs text-mute">in: {show(s.input)}</p>
             <p className="mt-1 break-words text-xs">out: {show(s.output)}</p>
             {s.htmlBytes > 0 && (
-              <p className="mt-1 text-xs text-gray-600">HTML read: {fmt(s.htmlBytes)} bytes</p>
+              <p className="mt-1 text-xs text-mute">HTML read: {fmt(s.htmlBytes)} bytes</p>
             )}
           </li>
         ))}
       </ol>
 
       {done && run.failReason && (
-        <p className="mt-3 rounded bg-red-50 p-2 text-sm text-red-900">
+        <p className="mt-3 bg-ink p-3 text-sm font-semibold text-white">
           Why it failed: {run.failReason}
         </p>
       )}
@@ -104,17 +103,20 @@ export function AgentTestView() {
 
   return (
     <div>
-      <p className="rounded border border-yellow-400 bg-yellow-50 p-3 text-sm">
-        Sample data. These runs are hand-written fixtures that show the layout. Real benchmark runs
-        (k/3, model and version recorded) replace them when the runner is connected.
+      <p className="flex flex-wrap items-center gap-3 border-y border-ink py-3 text-sm">
+        <SampleBadge />
+        <span>
+          Hand-written fixtures that show the layout. Real benchmark runs (k/3, model and version
+          recorded) replace them when the runner is connected.
+        </span>
       </p>
 
-      <div className="mt-4 flex flex-wrap items-end gap-3">
-        <label className="flex flex-col text-sm" htmlFor="task">
+      <div className="mt-5 flex flex-wrap items-end gap-3">
+        <label className="flex flex-col text-sm font-semibold" htmlFor="task">
           Task
           <select
             id="task"
-            className="mt-1 rounded border p-2"
+            className="mt-1 min-h-11 border-2 border-ink bg-paper px-3 font-normal"
             value={taskId}
             onChange={(e) => setTaskId(e.target.value)}
           >
@@ -125,33 +127,24 @@ export function AgentTestView() {
             ))}
           </select>
         </label>
-        <button
-          type="button"
-          className="rounded bg-blue-900 px-3 py-2 text-sm text-white"
-          onClick={() => setReplayKey((k) => k + 1)}
-        >
+        <Button variant="secondary" onClick={() => setReplayKey((k) => k + 1)}>
           Replay
-        </button>
-        <button
-          type="button"
-          disabled
-          title="The benchmark runner is not connected yet"
-          className="rounded border px-3 py-2 text-sm text-gray-500"
-        >
+        </Button>
+        <Button disabled title="The benchmark runner is not connected yet">
           Run benchmark (not connected)
-        </button>
+        </Button>
       </div>
 
-      <div className="mt-4 rounded border p-3 text-sm">
-        <p>
-          <span className="font-semibold">Same task in both modes:</span> {task.prompt}
+      <section aria-label="Task" className="mt-6 bg-ink p-5 text-white">
+        <p className="font-mono text-xs font-bold uppercase">Same task in both modes</p>
+        <p className="mt-2 text-2xl font-extrabold leading-tight">{task.prompt}</p>
+        <p className="mt-3 text-sm">
+          Expected: <span className="font-mono font-bold">{task.expected}</span> ·{" "}
+          {task.successCriteria}
         </p>
-        <p className="mt-1 text-gray-700">
-          Expected: <span className="font-mono">{task.expected}</span> · {task.successCriteria}
-        </p>
-      </div>
+      </section>
 
-      <div className="mt-4 grid gap-4 md:grid-cols-2">
+      <div className="mt-8 grid gap-10 md:grid-cols-2">
         <Lane run={runs.BEFORE} visible={Math.min(visible, runs.BEFORE.steps.length)} />
         <Lane run={runs.AFTER} visible={Math.min(visible, runs.AFTER.steps.length)} />
       </div>
