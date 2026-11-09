@@ -1,15 +1,16 @@
 @import "tailwindcss";
 
-/* Swiss design tokens. One red, no radius, no shadows. */
+/* Ledger x Swiss: cream paper, serif display, Swiss grid and heavy rules. One red, no radius. */
 @theme {
-  --color-ink: #111111;
-  --color-paper: #ffffff;
-  --color-signal: #e4002b;
-  --color-ok: #0a7a3e;
+  --color-ink: #1b1a17;
+  --color-paper: #f7f1e3;
+  --color-signal: #b3261e;
+  --color-ok: #1f5d3a;
   --color-wait: #8a5a00;
-  --color-mute: #555555;
-  --color-hilite: #ffe45c;
-  --font-sans: "Archivo", ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  --color-mute: #54514a;
+  --color-hilite: #f2d68a;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 }
 

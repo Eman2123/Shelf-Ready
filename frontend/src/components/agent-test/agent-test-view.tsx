@@ -24,7 +24,7 @@ function Lane({ run, visible }: { run: RecordedRun; visible: number }) {
       className={`border-t-8 pt-4 ${before ? "border-signal" : "border-ok"}`}
     >
       <header className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 className="text-3xl font-extrabold uppercase tracking-tight">
+        <h2 className="font-display text-4xl font-bold tracking-tight">
           {before ? "Before" : "After"}
           <span className="ml-3 text-sm font-normal normal-case tracking-normal text-mute">
             {before ? "reads the web page" : "uses the store MCP"}
@@ -71,7 +71,7 @@ function Lane({ run, visible }: { run: RecordedRun; visible: number }) {
       </ol>
 
       {done && run.failReason && (
-        <p className="mt-3 bg-ink p-3 text-sm font-semibold text-white">
+        <p className="mt-3 bg-ink p-3 text-sm font-semibold text-paper">
           Why it failed: {run.failReason}
         </p>
       )}
@@ -135,9 +135,9 @@ export function AgentTestView() {
         </Button>
       </div>
 
-      <section aria-label="Task" className="mt-6 bg-ink p-5 text-white">
+      <section aria-label="Task" className="mt-6 bg-ink p-5 text-paper">
         <p className="font-mono text-xs font-bold uppercase">Same task in both modes</p>
-        <p className="mt-2 text-2xl font-extrabold leading-tight">{task.prompt}</p>
+        <p className="font-display mt-2 text-3xl font-bold leading-tight">{task.prompt}</p>
         <p className="mt-3 text-sm">
           Expected: <span className="font-mono font-bold">{task.expected}</span> ·{" "}
           {task.successCriteria}

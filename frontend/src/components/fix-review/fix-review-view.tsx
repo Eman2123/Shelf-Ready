@@ -68,7 +68,7 @@ function FixCard({ fix, lane, kind }: { fix: FixProposal; lane: Lane; kind: Stat
         <p className="mt-3">The seller must enter this value before it can be published.</p>
       )}
       {lane === "red" && fix.rejectionReason && (
-        <p className="mt-3 bg-ink p-3 font-semibold text-white">No match. {fix.rejectionReason}</p>
+        <p className="mt-3 bg-ink p-3 font-semibold text-paper">No match. {fix.rejectionReason}</p>
       )}
       {ev && lane !== "yellow" && (
         <div className="mt-3 border-t border-ink pt-3">
@@ -90,17 +90,17 @@ export function FixReviewView({ fixes = sampleFixes }: { fixes?: FixProposal[] }
     <div>
       <div
         role="status"
-        className="grid items-end gap-x-8 gap-y-2 border-b-4 border-ink pb-6 md:grid-cols-[auto_1fr]"
+        className="grid items-end gap-x-8 gap-y-2 border-b-4 border-double border-ink pb-6 md:grid-cols-[auto_1fr]"
       >
         <span
-          className={`text-[9rem] font-extrabold leading-[0.8] tracking-[-0.06em] md:text-[13rem] ${
+          className={`font-display text-[9rem] font-bold leading-[0.8] tracking-[-0.04em] md:text-[13rem] ${
             c.unsupported === 0 ? "text-ink" : "text-signal"
           }`}
         >
           {c.unsupported}
         </span>
         <div className="pb-2">
-          <p className="text-3xl font-extrabold leading-tight">
+          <p className="font-display text-3xl font-bold leading-tight">
             Unsupported facts
             <br />
             in catalog.
@@ -108,6 +108,11 @@ export function FixReviewView({ fixes = sampleFixes }: { fixes?: FixProposal[] }
           <p className="mt-2 font-mono text-sm">
             {c.verified} of {c.total} fields verified
           </p>
+          {c.unsupported === 0 && (
+            <span className="mt-4 inline-block -rotate-3 border-[3px] border-ok px-3 py-1 text-sm font-bold uppercase tracking-[0.2em] text-ok">
+              Verified
+            </span>
+          )}
         </div>
       </div>
 
@@ -134,7 +139,7 @@ export function FixReviewView({ fixes = sampleFixes }: { fixes?: FixProposal[] }
               className={`border-t-8 pt-3 ${lane.rule}`}
             >
               <header className="flex items-baseline justify-between gap-2">
-                <h2 className="text-2xl font-extrabold uppercase tracking-tight">{lane.title}</h2>
+                <h2 className="font-display text-3xl font-bold tracking-tight">{lane.title}</h2>
                 <span className="font-mono text-xl font-bold">{items.length}</span>
               </header>
               <p className="mt-1 text-sm text-mute">{lane.note}</p>

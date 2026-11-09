@@ -18,9 +18,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   return (
     <div className="min-h-screen">
-      <header className="border-b-4 border-ink">
+      <header className="border-b-4 border-double border-ink">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-3 px-4 py-4">
-          <Link href="/app" className="text-xl font-extrabold uppercase tracking-tight">
+          <Link href="/app" className="font-display text-2xl font-bold tracking-tight">
             Shelf Ready
           </Link>
           <nav aria-label="Main">
