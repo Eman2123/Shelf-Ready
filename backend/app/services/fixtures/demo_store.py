@@ -109,6 +109,27 @@ PUBLISHED_PRODUCTS: dict[str, Product] = {
         checkout_requires_human=False,
         source_hash="published-mug-1",
     ),
+    "prod_gift": Product(
+        id="prod_gift",
+        store_id=STORE_ID,
+        paypal_product_id=None,
+        name="Tidewell Gift Card",
+        description="Digital gift card, redeemable at Tidewell Goods.",
+        price_cents=2500,
+        price_text="$25.00",
+        currency=CURRENCY,
+        stock=100,
+        variants=[],
+        shipping=_SHIPPING,
+        returns=_RETURNS,
+        sku="GIFT",
+        gtin=None,
+        images=[Image(url="https://example.com/img/gift.jpg", alt="Tidewell gift card")],
+        category="gift_cards",  # not in DEFAULT_POLICY.allowed_categories (benchmark task B8)
+        home_url="https://example.com/tidewell/gift-card",
+        checkout_requires_human=False,
+        source_hash="published-gift-1",
+    ),
 }
 
 DEFAULT_POLICY = PolicyRules(

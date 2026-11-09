@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, SampleBadge, StatusTag, type StatusKind } from "@/components/ui";
-import { sampleRuns, sampleTasks, totals, type RecordedRun } from "@/lib/fixtures/agent-runs";
+import { Button, StatusTag, type StatusKind } from "@/components/ui";
+import type { AgentRun } from "@/lib/contracts";
+import { recorded, runsFor, totals } from "@/lib/recorded";
+
+type RecordedRun = AgentRun;
 
 const OUTCOME_KIND: Record<RecordedRun["outcome"], StatusKind> = {
   SUCCESS: "ok",
@@ -16,6 +19,7 @@ const show = (v: unknown) => (typeof v === "string" ? v : JSON.stringify(v));
 
 function Lane({ run, visible }: { run: RecordedRun; visible: number }) {
   const t = totals(run);
+  const kn = recorded.metrics[run.mode].perTask[run.taskId];
   const done = visible >= run.steps.length;
   const before = run.mode === "BEFORE";
   return (
@@ -32,6 +36,9 @@ function Lane({ run, visible }: { run: RecordedRun; visible: number }) {
         </h2>
         {done && <StatusTag kind={OUTCOME_KIND[run.outcome]}>{run.outcome}</StatusTag>}
       </header>
+      <p className="mt-1 font-mono text-xs text-mute">
+        {kn.success}/{kn.runs} runs succeeded · {run.id}
+      </p>
 
       <dl className="mt-4 grid grid-cols-3 border-y border-ink text-sm">
         <div className="border-r border-ink py-2 pr-3">
@@ -80,12 +87,16 @@ function Lane({ run, visible }: { run: RecordedRun; visible: number }) {
 }
 
 export function AgentTestView() {
-  const [taskId, setTaskId] = useState(sampleTasks[0].id);
+  const [taskId, setTaskId] = useState(recorded.tasks[0].id);
   const [tick, setTick] = useState(0);
   const [replayKey, setReplayKey] = useState(0);
   const [reduce, setReduce] = useState(false);
-  const task = sampleTasks.find((x) => x.id === taskId) ?? sampleTasks[0];
-  const runs = sampleRuns[task.id];
+  const task = recorded.tasks.find((x) => x.id === taskId) ?? recorded.tasks[0];
+  // replica 1 is shown as the trace; the k/3 line under each lane counts all replicas
+  const runs = {
+    BEFORE: runsFor(task.id, "BEFORE")[0].run,
+    AFTER: runsFor(task.id, "AFTER")[0].run,
+  };
   const max = Math.max(runs.BEFORE.steps.length, runs.AFTER.steps.length);
 
   useEffect(() => {
@@ -103,12 +114,12 @@ export function AgentTestView() {
 
   return (
     <div>
-      <p className="flex flex-wrap items-center gap-3 border-y border-ink py-3 text-sm">
-        <SampleBadge />
-        <span>
-          Hand-written fixtures that show the layout. Real benchmark runs (k/3, model and version
-          recorded) replace them when the runner is connected.
-        </span>
+      <p className="border-y border-ink py-3 text-sm">
+        <span className="font-bold">Recorded runs.</span> {recorded.k} runs per task and mode by{" "}
+        {recorded.agentConfigs.join(" and ")}. These are scripted baseline agents, not a language
+        model, so each repeat gives the same result. Replay shows the stored trace; nothing is
+        re-run.{" "}
+        <span className="font-mono text-xs">sha256 {recorded.sourceSha256.slice(0, 12)}</span>
       </p>
 
       <div className="mt-5 flex flex-wrap items-end gap-3">
@@ -120,7 +131,7 @@ export function AgentTestView() {
             value={taskId}
             onChange={(e) => setTaskId(e.target.value)}
           >
-            {sampleTasks.map((x) => (
+            {recorded.tasks.map((x) => (
               <option key={x.id} value={x.id}>
                 {x.title}
               </option>
@@ -130,8 +141,8 @@ export function AgentTestView() {
         <Button variant="secondary" onClick={() => setReplayKey((k) => k + 1)}>
           Replay
         </Button>
-        <Button disabled title="The benchmark runner is not connected yet">
-          Run benchmark (not connected)
+        <Button disabled title="Run `make bench-run` in the backend to record a new set">
+          Run benchmark (script only)
         </Button>
       </div>
 

@@ -59,12 +59,15 @@ class StoreService:
         guarded_order: GuardedOrderFn | None = None,
         clock: Callable[[], datetime] = lambda: datetime.now(UTC),
         verify_key: KeyVerifierFn | None = None,
+        quote_id_factory: Callable[[], str] | None = None,
     ) -> None:
         self.products = products
         self.rules = rules
         self.guarded_order = guarded_order
         self.clock = clock
         self.verify_key = verify_key
+        # tests and the benchmark inject a counter so recorded runs are reproducible
+        self.quote_id_factory = quote_id_factory or (lambda: f"q_{uuid.uuid4().hex[:12]}")
         self.quotes: dict[str, Quote] = {}
 
     # --- quotes -------------------------------------------------------------------------
@@ -74,7 +77,7 @@ class StoreService:
         if price is None or stock is None:
             return None  # data not stated: nothing safe to pin
         quote = Quote(
-            quote_id=f"q_{uuid.uuid4().hex[:12]}",
+            quote_id=self.quote_id_factory(),
             product_id=product.id,
             variant_sku=variant_sku,
             unit_price_cents=price,
