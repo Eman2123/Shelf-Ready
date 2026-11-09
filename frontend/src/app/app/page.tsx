@@ -15,7 +15,7 @@ const screens = [
 export default function DashboardHome() {
   return (
     <div>
-      <h1 className="text-5xl font-extrabold uppercase leading-none tracking-tight">Dashboard</h1>
+      <h1 className="font-display text-6xl font-bold leading-none tracking-tight">Dashboard</h1>
       <p className="mt-3 max-w-xl">
         Demo mode. Built screens are linked; the rest is the build checklist.
       </p>

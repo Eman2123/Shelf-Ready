@@ -4,10 +4,10 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="mx-auto max-w-5xl px-4 py-16">
-      <p className="border-b-4 border-ink pb-2 font-mono text-xs font-bold uppercase">
+      <p className="border-b-4 border-double border-ink pb-2 font-mono text-xs font-bold uppercase">
         Shelf Ready · PayPal sandbox only
       </p>
-      <h1 className="mt-8 text-6xl font-extrabold uppercase leading-[0.9] tracking-tight md:text-8xl">
+      <h1 className="mt-8 font-display text-6xl font-bold leading-[0.92] tracking-tight md:text-8xl">
         Same agent.
         <br />
         Same task.

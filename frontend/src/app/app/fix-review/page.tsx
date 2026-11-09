@@ -6,7 +6,7 @@ export const metadata = { title: "Fix review · ShelfReady" };
 export default function FixReviewPage() {
   return (
     <div>
-      <h1 className="text-5xl font-extrabold uppercase leading-none tracking-tight">Fix review</h1>
+      <h1 className="font-display text-6xl font-bold leading-none tracking-tight">Fix review</h1>
       <p className="mt-3 mb-6 max-w-xl">
         Every proposed value must be found in the source or come from the seller. Anything else is
         blocked.

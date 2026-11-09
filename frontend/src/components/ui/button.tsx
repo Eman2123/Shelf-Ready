@@ -8,7 +8,7 @@ const BASE =
   "disabled:text-mute";
 
 const VARIANT: Record<Variant, string> = {
-  primary: "bg-signal text-white hover:bg-ink",
+  primary: "bg-ink text-paper hover:bg-signal",
   secondary: "border-2 border-ink bg-paper text-ink hover:bg-ink hover:text-paper",
 };
 
