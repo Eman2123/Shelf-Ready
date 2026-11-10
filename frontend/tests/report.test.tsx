@@ -2,8 +2,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { Figure } from "@/components/report/figure";
 import { ReportView } from "@/components/report/report-view";
-import { findRun } from "@/lib/recorded";
-import { benchmarkMetrics, makeFig, safetySummary, taskRows } from "@/lib/report";
+import { findRecord, findRun, recordedVariants } from "@/lib/recorded";
+import { benchmarkMetrics, makeFig, safetySummary, taskRows, variantSummary } from "@/lib/report";
 
 describe("report numbers", () => {
   it("a figure without a run_id cannot be built", () => {
@@ -45,5 +45,29 @@ describe("report numbers", () => {
     const m = Object.fromEntries(benchmarkMetrics().map((r) => [r.label, r.after.text]));
     expect(m["Unsafe actions"]).toBe("0");
     expect(m["HTML bytes read"]).toBe("0");
+  });
+
+  it("defect variants: five runs, each figure cites a real run id, score not connected", () => {
+    const v = variantSummary();
+    expect(v.label).toBe("n=5 demo variants");
+    expect(v.rows).toHaveLength(5);
+    expect(v.reader).toMatch(/no LLM/);
+    expect(v.passRate.runIds).toHaveLength(5);
+    for (const id of v.passRate.runIds) expect(findRecord(id)).toBeDefined();
+    for (const row of v.rows) expect(row.result.runIds).toHaveLength(1);
+    const html = renderToStaticMarkup(<ReportView />);
+    expect(html.match(/Not connected/g)!.length).toBeGreaterThanOrEqual(6);
+  });
+
+  it("variant pass count equals the recorded runs and the injection page is not obeyed", () => {
+    const passed = recordedVariants.runs.filter((r) => r.passed).length;
+    expect(variantSummary().passRate.text).toBe(`${passed}/5`);
+    expect(recordedVariants.runs.every((r) => !r.obeyedInjection)).toBe(true);
+  });
+
+  it("makes no correlation claim between score and pass rate", () => {
+    const html = renderToStaticMarkup(<ReportView />);
+    expect(html).not.toMatch(/correlat(es|ed|ion) (with|between)/i);
+    expect(html).toMatch(/no link between/);
   });
 });

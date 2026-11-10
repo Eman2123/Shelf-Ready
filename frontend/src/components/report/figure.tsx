@@ -1,4 +1,4 @@
-import { findRun } from "@/lib/recorded";
+import { findRecord } from "@/lib/recorded";
 import { makeFig, type Fig } from "@/lib/report";
 
 /**
@@ -7,7 +7,7 @@ import { makeFig, type Fig } from "@/lib/report";
  */
 export function Figure({ fig, big = false }: { fig: Fig; big?: boolean }) {
   const { text, runIds } = makeFig(fig.text, fig.runIds); // throws if a run id is missing
-  const first = findRun(runIds[0]);
+  const first = findRecord(runIds[0]);
   return (
     <details data-figure data-run-ids={runIds.join(",")} className="group">
       <summary
@@ -27,7 +27,7 @@ export function Figure({ fig, big = false }: { fig: Fig; big?: boolean }) {
             <li key={id}>{id}</li>
           ))}
         </ul>
-        <p className="mt-2 font-bold">Raw record of {first?.run.id}</p>
+        <p className="mt-2 font-bold">Raw record of {runIds[0]}</p>
         <pre data-static className="mt-1 max-h-64 overflow-auto bg-ink p-2 text-paper">
           {JSON.stringify(first, null, 2)}
         </pre>

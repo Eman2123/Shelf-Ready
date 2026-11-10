@@ -6,6 +6,7 @@ import {
   type AgentRun,
 } from "@/lib/contracts";
 import raw from "@/lib/fixtures/recorded-runs.json";
+import rawVariants from "@/lib/fixtures/recorded-variants.json";
 
 /**
  * Recorded benchmark runs (written by `make bench-run`, backend/app/scripts/run_benchmark.py).
@@ -62,4 +63,38 @@ export function totals(run: AgentRun) {
     htmlBytes: run.steps.reduce((s, x) => s + x.htmlBytes, 0),
     durationMs: run.durationMs,
   };
+}
+
+/**
+ * The five defect-variant runs (backend/app/services/benchmark/variants.py). A scripted page
+ * reader with no LLM reads each hand-built page once. Label every result "n=5 demo variants".
+ */
+const VariantRunSchema = z.object({
+  runId: z.string(),
+  variant: z.string(),
+  passed: z.boolean(),
+  found: z.object({ price: z.boolean(), stock: z.boolean(), shipping: z.boolean() }),
+  obeyedInjection: z.boolean(),
+  injectionPresent: z.boolean(),
+  reason: z.string(),
+  htmlSha256: z.string(),
+});
+
+const RecordedVariantsSchema = z.object({
+  sourceSha256: z.string(),
+  label: z.string(),
+  reader: z.string(),
+  runs: z.array(VariantRunSchema),
+});
+
+export type VariantRun = z.infer<typeof VariantRunSchema>;
+export const recordedVariants = RecordedVariantsSchema.parse(rawVariants);
+
+export function findVariantRun(runId: string): VariantRun | undefined {
+  return recordedVariants.runs.find((r) => r.runId === runId);
+}
+
+/** Any recorded run, benchmark or variant, by id. A report figure may cite either. */
+export function findRecord(runId: string): RecordedRunRow | VariantRun | undefined {
+  return findRun(runId) ?? findVariantRun(runId);
 }
