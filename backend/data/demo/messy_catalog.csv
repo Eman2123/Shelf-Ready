@@ -1,0 +1,13 @@
+sku,name,description,price,currency,stock,category,ship_regions,ship_cost,ship_min_days,ship_max_days,return_days,image_url,variants
+TEE,Tidewell Classic Tee,Soft cotton tee. Call us to confirm your size.,from $20,USD,,apparel,,,,,30,https://example.com/img/tee.jpg,
+TOTE,Tidewell Harbor Canvas Tote,Heavy canvas tote.,$24.00,USD,12,accessories,US|CA,5.99,3,5,30,https://example.com/img/tote.jpg,
+MUG,Tidewell Enamel Mug,Stoneware mug 350 ml.,$18,USD,,kitchen,,,,,,https://example.com/img/mug.jpg,color=white:0|color=blue
+GIFT,Tidewell Gift Card,Digital gift card.,pick an amount,USD,,gift_cards,,,,,,,
+CAP,Tidewell Harbor Cap,Washed cotton cap.,$22.00,USD,9,apparel,US,4.50,4,7,30,,
+SOCK,Tidewell Wool Socks,Pair of wool socks.,$14,USD,,apparel,,,,,,,size=M|size=L
+BOTT,Tidewell Steel Bottle,Insulated 500 ml bottle.,$28.00,USD,6,kitchen,US|CA,5.99,3,5,14,,
+CAND,Tidewell Sea Salt Candle,Hand poured candle.,starting at $16,USD,,home,,,,,,,
+POST,Tidewell Harbor Poster,A3 print.,$12.00,USD,20,home,US,3.00,5,9,,,
+BEAN,Tidewell Knit Beanie,Warm knit beanie.,$19.00,USD,0,apparel,US|CA,4.50,3,6,30,,
+TOW,Tidewell Beach Towel,Large cotton towel.,$32.00,USD,,accessories,,,,,,,
+PEN,Tidewell Field Notebook,Lined pocket notebook.,$9.00,USD,40,stationery,US,2.50,3,5,30,,
