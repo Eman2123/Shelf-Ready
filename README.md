@@ -25,10 +25,10 @@ Be exact about this before you read any number in the Report.
 | Store MCP (4 tools), quote binding, key check hook | Runs |
 | Benchmark: 12 tasks, BEFORE and AFTER agents, evaluator, k=3 runs, recorded replay | Runs |
 | Defect variants (n=5), Report screen, Fix review, Agent test | Runs |
-| Audit engine and readiness score (9 dimensions, critical cap, waterfall, `run_id` on every check), read-only `GET /api/audit/demo-store` | Built and unit-tested. Not yet wired to the Report, which still shows recorded runs only |
-| Fix engine, provenance validator, versions and rollback | Built and unit-tested. Fix review still shows fixtures |
-| Policy engine (`evaluate_policy`), agent keys (hashed, revoke, expiry, rate limit, spend) | Built and unit-tested. The benchmark guard uses `evaluate_policy` and reproduces the recorded 72 runs; keys are not yet wired into the running server |
-| Hash-chained run events, `verify_chain`, `verify_receipt` (chains the stored benchmark runs) | Built and unit-tested. The Report does not show the chain yet; the script covers benchmark runs only |
+| Audit engine and readiness score (9 dimensions, critical cap, waterfall, `run_id` on every check), read-only `GET /api/audit/demo-store` | Built and unit-tested. The Report shows a recorded audit of two catalogs (`make audit-record`, `make verify-audit`) |
+| Fix engine, provenance validator, versions and rollback | Built and unit-tested, with a stateless `POST /api/fixes/validate`. Fix review still shows fixtures; nothing applies fixes to a live catalog yet |
+| Policy engine (`evaluate_policy`), agent keys (hashed, revoke, expiry, rate limit, spend) | Built and unit-tested. The benchmark guard uses `evaluate_policy` and reproduces the recorded 72 runs. Keys are wired into the running server: every `create_order` call is key-checked, admin routes `/api/keys` create, list and revoke (off unless `ADMIN_TOKEN` is set). Keys live in memory and reset on restart |
+| Hash-chained run events, `verify_chain`, `verify_receipt` (chains the stored benchmark runs) | Built and unit-tested. The Report shows the chain over the stored benchmark runs; it does not yet cover source, fixes, order or webhook |
 | PayPal orders, authorize/capture, verified webhooks, read-only witness | **Not connected** (needs sandbox credentials) |
 
 The AFTER benchmark runs use `BenchmarkGuard` (`backend/app/services/benchmark/guard.py`), a stand-in that applies the published order rules. The real policy engine (`app/services/policy`) implements the same rules as a pure function and is unit-tested; swapping it into the guard is the integration step. It never talks to PayPal and never creates a PayPal order; every order it returns has `paypal_order_id: null`. It is replaced by the real policy and key functions when those are connected, and the Report says so.
@@ -60,7 +60,7 @@ npm run dev                                                                # 9
 
 `.env.example` lists every variable. Copy it to `.env` only when you connect PayPal sandbox credentials or an LLM provider later. Keep API keys server-side only.
 
-Make targets (from the repo root, with the backend venv active): `make test`, `make lint`, `make seed-demo`, `make bench-run`, `make bench-record TASK=A2`, `make verify-benchmark`.
+Make targets (from the repo root, with the backend venv active): `make test`, `make lint`, `make seed-demo`, `make bench-run`, `make bench-record TASK=A2`, `make verify-benchmark`, `make audit-record`, `make verify-audit`, `make verify-receipt`.
 
 ## Store MCP (agent side)
 
@@ -126,6 +126,18 @@ python -m app.scripts.verify_benchmark           # checks the record, exit 1 on 
 ### Defect variants (n=5 demo variants)
 
 Five hand-built pages of one product, each with one defect: clean, price ambiguous, stock missing, shipping hidden, injection. A scripted page reader (no LLM) must read an exact price, a stock statement and a shipping cost, and must ignore any instruction on the page. Each result is a stored run (`var_<name>_1`) with the SHA-256 of the exact page read. These are five pages, not a sample, so **no claim is made about a link between readiness score and pass rate**. The readiness score column shows "Not connected" until the audit engine exists.
+
+## Readiness score and what it does not claim
+
+`make audit-record` audits two catalogs with the real rule engine and stores each result with a run id (`audit_messy_csv`, `audit_published_demo`) plus the hash chain over the stored benchmark runs (`receipt_benchmark_chain`). `make verify-audit` recomputes all of it and exits 1 on any difference.
+
+The two catalogs are **different**. The published one is hand-written, not the output of the fix engine, so the two scores are not a before and after of fixes. A real before and after needs the fix engine run on a live catalog, which is not connected. The Report says so and shows "Not connected" for it.
+
+Two choices that are not in the PRD and should be confirmed: a store with no agent checkout path is capped at 60 (same value as the per-product critical cap), and instruction-like text in a description (a fixed regex, no model) costs the description points and is reported under `DESCRIPTION_VAGUE` because the contract has no separate code.
+
+## API notes
+
+`GET /api/audit/demo-store` and `POST /api/fixes/validate` are public, read-only and rate limited per IP (60 per minute). Key management needs the `X-Admin-Token` header and `ADMIN_TOKEN` set on the server. Responses carry security headers and CORS is limited to `APP_URL`. Behind nginx, start uvicorn with `--proxy-headers` so the rate limit sees the real client IP.
 
 ## Report screen and the run-id rule
 

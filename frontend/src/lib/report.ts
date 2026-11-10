@@ -1,4 +1,4 @@
-import { findRecord, recorded, recordedVariants, runsFor } from "@/lib/recorded";
+import { findRecord, recorded, recordedAudit, recordedVariants, runsFor } from "@/lib/recorded";
 import type { AgentMode } from "@/lib/contracts";
 
 /**
@@ -149,5 +149,58 @@ export function variantSummary() {
       `${passed.length}/${runs.length}`,
       runs.map((r) => r.runId),
     ),
+  };
+}
+
+export type AuditProductRow = { productId: string; name: string; score: Fig; deductions: string };
+export type AuditSection = {
+  runId: string;
+  label: string;
+  source: string;
+  productCount: string;
+  storeScore: Fig;
+  capNotes: string[];
+  rows: AuditProductRow[];
+};
+
+/** Up to three biggest reasons a product lost points, as text. Evidence is the raw value seen. */
+function deductionText(waterfall: { label: string; delta: number; evidence: string }[]): string {
+  const lost = waterfall.filter((s) => s.label !== "start");
+  if (lost.length === 0) return "none";
+  const shown = lost.slice(0, 3).map((s) => `${s.label} ${s.delta} (${s.evidence})`);
+  return lost.length > 3 ? `${shown.join("; ")}; ${lost.length - 3} more` : shown.join("; ");
+}
+
+/**
+ * Readiness scores (PRD 4.1), from the recorded audit of two DIFFERENT catalogs. The second is
+ * not the output of the fix engine, so the pair is never presented as a before/after of fixes.
+ */
+export function auditSections(): AuditSection[] {
+  return recordedAudit.audits.map((a) => ({
+    runId: a.runId,
+    label: a.label,
+    source: a.source,
+    productCount: String(a.products.length),
+    storeScore: makeFig(String(a.storeScore), [a.runId]),
+    capNotes: a.notes,
+    rows: a.products.map((p) => ({
+      productId: p.productId,
+      name: p.name,
+      score: makeFig(String(p.score), [a.runId]),
+      deductions: deductionText(p.waterfall),
+    })),
+  }));
+}
+
+/** Hash chain over the stored benchmark runs, as recorded by the backend. */
+export function receiptSummary() {
+  const r = recordedAudit.receipt;
+  return {
+    ok: r.ok,
+    covers: r.covers,
+    headHash: r.headHash,
+    brokenAt: r.brokenAt,
+    events: makeFig(String(r.events), [r.runId]),
+    sourceSha256: recordedAudit.sourceSha256,
   };
 }

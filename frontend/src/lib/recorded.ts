@@ -7,6 +7,7 @@ import {
 } from "@/lib/contracts";
 import raw from "@/lib/fixtures/recorded-runs.json";
 import rawVariants from "@/lib/fixtures/recorded-variants.json";
+import rawAudit from "@/lib/fixtures/recorded-audit.json";
 
 /**
  * Recorded benchmark runs (written by `make bench-run`, backend/app/scripts/run_benchmark.py).
@@ -94,7 +95,72 @@ export function findVariantRun(runId: string): VariantRun | undefined {
   return recordedVariants.runs.find((r) => r.runId === runId);
 }
 
-/** Any recorded run, benchmark or variant, by id. A report figure may cite either. */
-export function findRecord(runId: string): RecordedRunRow | VariantRun | undefined {
-  return findRun(runId) ?? findVariantRun(runId);
+/**
+ * Recorded audit runs (written by `make audit-record`, backend/app/scripts/record_audit.py).
+ * Two different catalogs, each audited by the real rule engine, plus the receipt chain over the
+ * stored benchmark runs. Parsed against a schema at load time, like the benchmark record.
+ */
+const AuditCheckSchema = z.object({
+  checkId: z.string(),
+  dimension: z.string(),
+  severity: z.string(),
+  taskLink: z.string().nullable(),
+  evidence: z.string(),
+  passed: z.boolean(),
+  points: z.number().int(),
+  runId: z.string(),
+});
+
+const AuditProductSchema = z.object({
+  productId: z.string(),
+  name: z.string(),
+  score: z.number().int(),
+  rawScore: z.number().int(),
+  issueCodes: z.array(z.string()),
+  checks: z.array(AuditCheckSchema),
+  waterfall: z.array(
+    z.object({ label: z.string(), delta: z.number().int(), evidence: z.string() }),
+  ),
+});
+
+const AuditRunSchema = z.object({
+  runId: z.string(),
+  label: z.string(),
+  source: z.string(),
+  rulePackVersion: z.string(),
+  storeScore: z.number().int(),
+  storeCapApplied: z.boolean(),
+  notes: z.array(z.string()),
+  products: z.array(AuditProductSchema),
+});
+
+const ReceiptSchema = z.object({
+  runId: z.string(),
+  covers: z.string(),
+  ok: z.boolean(),
+  events: z.number().int(),
+  headHash: z.string(),
+  brokenAt: z.string().nullable(),
+});
+
+const RecordedAuditSchema = z.object({
+  sourceSha256: z.string(),
+  audits: z.array(AuditRunSchema),
+  receipt: ReceiptSchema,
+});
+
+export type AuditRunRecord = z.infer<typeof AuditRunSchema>;
+export type ReceiptRecord = z.infer<typeof ReceiptSchema>;
+export const recordedAudit = RecordedAuditSchema.parse(rawAudit);
+
+export function findAuditRecord(runId: string): AuditRunRecord | ReceiptRecord | undefined {
+  if (recordedAudit.receipt.runId === runId) return recordedAudit.receipt;
+  return recordedAudit.audits.find((a) => a.runId === runId);
+}
+
+/** Any recorded run (benchmark, variant, audit or receipt chain), by id. A figure may cite any. */
+export function findRecord(
+  runId: string,
+): RecordedRunRow | VariantRun | AuditRunRecord | ReceiptRecord | undefined {
+  return findRun(runId) ?? findVariantRun(runId) ?? findAuditRecord(runId);
 }

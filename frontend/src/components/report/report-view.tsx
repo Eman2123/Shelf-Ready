@@ -1,7 +1,14 @@
 import { Figure } from "@/components/report/figure";
 import { StatusTag } from "@/components/ui";
 import { recorded } from "@/lib/recorded";
-import { benchmarkMetrics, safetySummary, taskRows, variantSummary } from "@/lib/report";
+import {
+  auditSections,
+  benchmarkMetrics,
+  receiptSummary,
+  safetySummary,
+  taskRows,
+  variantSummary,
+} from "@/lib/report";
 
 function Section({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
   return (
@@ -35,6 +42,8 @@ export function ReportView() {
   const tasks = taskRows();
   const safety = safetySummary();
   const variants = variantSummary();
+  const audits = auditSections();
+  const receipt = receiptSummary();
   return (
     <div>
       <p className="border-b-4 border-double border-ink pb-2 font-mono text-xs font-bold uppercase">
@@ -45,8 +54,67 @@ export function ReportView() {
         scripted baselines named in each run, not a language model.
       </p>
 
-      <Section n="01" title="Readiness score, before and after">
-        <NotConnected what="The readiness score and its waterfall" from="audit engine" />
+      <Section n="01" title="Readiness score of two catalogs">
+        <p className="mt-2 max-w-2xl text-sm">
+          Each score is computed by the audit rules from the product data: nine checks per product,
+          weights that total <span data-static>100</span>, and a cap of <span data-static>60</span>{" "}
+          when a critical check fails (an unclear price, or a checkout that needs a human). These
+          are two <strong>different</strong> catalogs. The second is a hand-written example, not the
+          output of the fix engine, so the two scores are <strong>not</strong> a before and after of
+          fixes.
+        </p>
+        {audits.map((a) => (
+          <div key={a.runId} className="mt-6">
+            <h3 className="font-display text-xl font-bold">
+              <span data-static>{a.label}</span>
+            </h3>
+            <p data-static className="font-mono text-xs text-mute">
+              {a.source} · {a.productCount} products
+            </p>
+            <p className="mt-2 text-sm">
+              Store score: <Figure fig={a.storeScore} big />
+            </p>
+            {a.capNotes.map((n) => (
+              <p key={n} data-static className="mt-1 text-sm">
+                {n}
+              </p>
+            ))}
+            <div className="relative mt-3 overflow-x-auto">
+              <table className="w-full min-w-[34rem] border-collapse text-left text-sm">
+                <caption className="sr-only">Product scores for {a.label}</caption>
+                <thead>
+                  <tr className="border-b-2 border-ink font-mono text-xs uppercase">
+                    <th scope="col" className="py-2 pr-4">
+                      Product
+                    </th>
+                    <th scope="col" className="py-2 pr-4">
+                      Score
+                    </th>
+                    <th scope="col" className="py-2 pr-4">
+                      Points lost, and the value that caused it
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {a.rows.map((r) => (
+                    <tr key={r.productId} className="border-b border-ink align-top">
+                      <th scope="row" data-static className="py-2 pr-4 font-normal">
+                        {r.name}
+                      </th>
+                      <td className="py-2 pr-4">
+                        <Figure fig={r.score} />
+                      </td>
+                      <td data-static className="py-2 pr-4">
+                        {r.deductions}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        ))}
+        <NotConnected what="A before and after score produced by fixes" from="fix engine" />
       </Section>
 
       <Section n="02" title="Agent benchmark">
@@ -235,10 +303,19 @@ export function ReportView() {
 
       <p className="mt-10 border-t-4 border-double border-ink pt-4 text-sm">
         <span className="font-bold">Receipt chain: </span>
-        <StatusTag kind="wait">Not connected</StatusTag> The benchmark record has its own
-        fingerprint, shown below and checked by{" "}
-        <code className="font-mono">make verify-benchmark</code>. The full chain (source, audit,
-        fixes, order, webhook) arrives with the money and audit services.
+        {receipt.ok ? (
+          <StatusTag kind="ok">intact</StatusTag>
+        ) : (
+          <StatusTag kind="blocked">broken</StatusTag>
+        )}{" "}
+        <Figure fig={receipt.events} /> linked events, each holding the hash of the one before it.
+        This covers <span data-static>{receipt.covers}</span>; the source snapshot, fixes, order and
+        webhook links arrive with the money services. It is tamper-evident, not tamper-proof. It was
+        recorded with the audit snapshot; check it again with{" "}
+        <code className="font-mono">make verify-receipt</code>.
+      </p>
+      <p data-static className="mt-2 break-all font-mono text-xs">
+        Chain head (SHA-256): {receipt.headHash}
       </p>
       <p data-static className="mt-2 break-all font-mono text-xs">
         Benchmark record fingerprint (SHA-256): {recorded.sourceSha256}

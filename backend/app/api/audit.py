@@ -6,8 +6,9 @@ run_id it was computed under.
 
 from __future__ import annotations
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
+from app.core.security import limiter
 from app.services.audit import audit_store
 from app.services.fixtures.demo_store import PUBLISHED_PRODUCTS
 
@@ -17,7 +18,8 @@ DEMO_RUN_ID = "run_demo_audit"
 
 
 @router.get("/demo-store")
-def audit_demo_store() -> dict:
+@limiter.limit("60/minute")
+def audit_demo_store(request: Request) -> dict:
     audit = audit_store(list(PUBLISHED_PRODUCTS.values()), run_id=DEMO_RUN_ID)
     return {
         "run_id": audit.run_id,

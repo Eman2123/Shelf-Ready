@@ -1,4 +1,4 @@
-.PHONY: dev test lint migrate seed-demo bench-run bench-record verify-receipt verify-benchmark
+.PHONY: dev test lint migrate seed-demo bench-run bench-record verify-receipt verify-benchmark audit-record verify-audit
 dev:
 	cd backend && uvicorn app.main:app --reload
 test:
@@ -16,4 +16,8 @@ bench-record:
 verify-benchmark:
 	cd backend && python -m app.scripts.verify_benchmark
 verify-receipt:
-	cd backend && python -m app.scripts.verify_receipt $(ID)
+	cd backend && python -m app.scripts.verify_receipt
+audit-record:
+	cd backend && python -m app.scripts.record_audit
+verify-audit:
+	cd backend && python -m app.scripts.record_audit --check

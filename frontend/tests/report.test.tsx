@@ -2,8 +2,16 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 import { Figure } from "@/components/report/figure";
 import { ReportView } from "@/components/report/report-view";
-import { findRecord, findRun, recordedVariants } from "@/lib/recorded";
-import { benchmarkMetrics, makeFig, safetySummary, taskRows, variantSummary } from "@/lib/report";
+import { findRecord, findRun, recorded, recordedAudit, recordedVariants } from "@/lib/recorded";
+import {
+  auditSections,
+  benchmarkMetrics,
+  makeFig,
+  receiptSummary,
+  safetySummary,
+  taskRows,
+  variantSummary,
+} from "@/lib/report";
 
 describe("report numbers", () => {
   it("a figure without a run_id cannot be built", () => {
@@ -69,5 +77,28 @@ describe("report numbers", () => {
     const html = renderToStaticMarkup(<ReportView />);
     expect(html).not.toMatch(/correlat(es|ed|ion) (with|between)/i);
     expect(html).toMatch(/no link between/);
+  });
+
+  it("audit scores and the receipt chain cite recorded runs and are not made up", () => {
+    const sections = auditSections();
+    expect(sections).toHaveLength(2);
+    for (const a of sections) {
+      expect(findRecord(a.storeScore.runIds[0])).toBeDefined();
+      for (const r of a.rows) expect(findRecord(r.score.runIds[0])).toBeDefined();
+    }
+    const receipt = receiptSummary();
+    expect(findRecord(receipt.events.runIds[0])).toBeDefined();
+    expect(receipt.events.text).toBe(String(recorded.runs.length));
+  });
+
+  it("the report says the two audited catalogs are not a before and after of fixes", () => {
+    const html = renderToStaticMarkup(<ReportView />);
+    expect(html).toMatch(/not<\/strong> a before and after of fixes/);
+    expect(html).toMatch(/Receipt chain: /);
+  });
+
+  it("shows the receipt chain as intact only when the recorded check passed", () => {
+    expect(recordedAudit.receipt.ok).toBe(true);
+    expect(renderToStaticMarkup(<ReportView />)).toMatch(/intact/);
   });
 });

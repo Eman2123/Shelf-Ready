@@ -104,6 +104,10 @@ class KeyStore:
     def get(self, key_id: str) -> KeyRecord | None:
         return self._by_id.get(key_id)
 
+    def list_keys(self) -> list[KeyRecord]:
+        """Every key record, oldest first. Records hold the hash only, never the raw key."""
+        return list(self._by_id.values())
+
     # --- verification -----------------------------------------------------------------
     def verify(self, raw_key: str) -> KeyVerification:
         """Identity check on every order call. Matches StoreService's verify_key signature."""
