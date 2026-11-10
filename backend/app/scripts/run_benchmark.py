@@ -23,6 +23,7 @@ from app.services.benchmark.runner import (
     save_runs,
 )
 from app.services.benchmark.tasks import TASKS
+from app.services.benchmark.variants import READER, VARIANTS_PATH, run_variants, save_variants
 
 FRONTEND_PATH = (
     Path(__file__).resolve().parents[3]
@@ -32,7 +33,7 @@ FRONTEND_PATH = (
     / "fixtures"
     / "recorded-runs.json"
 )
-
+FRONTEND_VARIANTS_PATH = FRONTEND_PATH.with_name("recorded-variants.json")
 
 # Raw tool traffic keeps its real (snake_case) keys, so the UI shows what the MCP really returned.
 _RAW_KEYS = {"input", "output", "final"}
@@ -63,15 +64,45 @@ def export_frontend(records: list[RunRecord], sha: str, k: int, path: Path = FRO
     path.write_text(json.dumps(_camel(body), indent=2, sort_keys=True) + "\n")
 
 
+def variants_body(results, sha: str) -> dict:
+    return {
+        "sourceSha256": sha,
+        "label": "n=5 demo variants",
+        "reader": READER,
+        "runs": _camel([r.__dict__ for r in results]),
+    }
+
+
+def export_variants(results, sha: str, path: Path = FRONTEND_VARIANTS_PATH) -> None:
+    path.write_text(json.dumps(variants_body(results, sha), indent=2, sort_keys=True) + "\n")
+
+
 def main(argv: list[str] | None = None) -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--k", type=int, default=DEFAULT_K)
     ap.add_argument("--no-frontend", action="store_true")
+    ap.add_argument(
+        "--variants-only",
+        action="store_true",
+        help="re-record only the five defect variants; leave the 72 stored runs untouched",
+    )
     args = ap.parse_args(argv)
+    if args.variants_only:
+        variants = run_variants()
+        vsha = save_variants(variants)
+        if not args.no_frontend:
+            export_variants(variants, vsha)
+        print(f"{len(variants)} variant runs stored in {VARIANTS_PATH}  sha256={vsha}")
+        return
     records = run_suite(k=args.k)
     sha = save_runs(records, k=args.k)
     if not args.no_frontend:
         export_frontend(records, sha, args.k)
+    variants = run_variants()
+    vsha = save_variants(variants)
+    if not args.no_frontend:
+        export_variants(variants, vsha)
+    print(f"{len(variants)} variant runs stored in {VARIANTS_PATH}  sha256={vsha}")
     m = metrics(records)
     print(f"{len(records)} runs stored in {DATA_PATH}  sha256={sha}")
     for mode in (AgentMode.BEFORE, AgentMode.AFTER):

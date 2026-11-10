@@ -1,4 +1,4 @@
-import { findRun, recorded, runsFor } from "@/lib/recorded";
+import { findRecord, recorded, recordedVariants, runsFor } from "@/lib/recorded";
 import type { AgentMode } from "@/lib/contracts";
 
 /**
@@ -10,7 +10,7 @@ export type Fig = { text: string; runIds: string[] };
 export function makeFig(text: string, runIds: string[]): Fig {
   if (runIds.length === 0) throw new Error(`Report figure "${text}" has no run_id`);
   for (const id of runIds) {
-    if (!findRun(id)) throw new Error(`Report figure "${text}" cites unknown run_id ${id}`);
+    if (!findRecord(id)) throw new Error(`Report figure "${text}" cites unknown run_id ${id}`);
   }
   return { text, runIds };
 }
@@ -107,3 +107,47 @@ export function safetySummary() {
 }
 
 export const firstRunOf = (taskId: string, mode: AgentMode) => runsFor(taskId, mode)[0];
+
+export type VariantRow = {
+  variant: string;
+  title: string;
+  found: { price: boolean; stock: boolean; shipping: boolean };
+  injectionPresent: boolean;
+  result: Fig;
+  reason: string;
+};
+
+const VARIANT_TITLES: Record<string, string> = {
+  clean: "Clean",
+  price_ambiguous: "Price ambiguous",
+  stock_missing: "Stock missing",
+  shipping_hidden: "Shipping hidden",
+  injection: "Injection in the page",
+};
+
+/**
+ * Defect variants (PRD 4.1). "n=5 demo variants": five hand-built pages, not a sample, so no
+ * correlation between readiness score and pass rate is claimed. The readiness score itself comes
+ * from the audit engine and is not connected, so it is never computed or guessed here.
+ */
+export function variantSummary() {
+  const runs = recordedVariants.runs;
+  const passed = runs.filter((r) => r.passed);
+  const rows: VariantRow[] = runs.map((r) => ({
+    variant: r.variant,
+    title: VARIANT_TITLES[r.variant] ?? r.variant,
+    found: r.found,
+    injectionPresent: r.injectionPresent,
+    result: makeFig(r.passed ? "pass" : "fail", [r.runId]),
+    reason: r.reason,
+  }));
+  return {
+    label: recordedVariants.label,
+    reader: recordedVariants.reader,
+    rows,
+    passRate: makeFig(
+      `${passed.length}/${runs.length}`,
+      runs.map((r) => r.runId),
+    ),
+  };
+}

@@ -1,7 +1,7 @@
 import { Figure } from "@/components/report/figure";
 import { StatusTag } from "@/components/ui";
 import { recorded } from "@/lib/recorded";
-import { benchmarkMetrics, safetySummary, taskRows } from "@/lib/report";
+import { benchmarkMetrics, safetySummary, taskRows, variantSummary } from "@/lib/report";
 
 function Section({ n, title, children }: { n: string; title: string; children: React.ReactNode }) {
   return (
@@ -34,6 +34,7 @@ export function ReportView() {
   const metrics = benchmarkMetrics();
   const tasks = taskRows();
   const safety = safetySummary();
+  const variants = variantSummary();
   return (
     <div>
       <p className="border-b-4 border-double border-ink pb-2 font-mono text-xs font-bold uppercase">
@@ -130,15 +131,71 @@ export function ReportView() {
         </div>
       </Section>
 
-      <Section n="03" title="Issues found, fixed, and needing the seller">
+      <Section n="03" title="Defect variants">
+        <p className="mt-2 max-w-2xl text-sm">
+          <span data-static className="font-mono font-bold">
+            {variants.label}
+          </span>
+          : five hand-built pages of one product, each with one defect. A scripted page reader (no
+          LLM) must read an exact price, a stock statement and a shipping cost, and must ignore any
+          instruction written on the page. These are five pages, not a sample, so no link between
+          readiness score and pass rate is claimed.
+        </p>
+        <p className="mt-2 text-sm">
+          Pages passed: <Figure fig={variants.passRate} />
+        </p>
+        <div className="relative mt-4 overflow-x-auto">
+          <table className="w-full min-w-[34rem] border-collapse text-left text-sm">
+            <caption className="sr-only">Defect variant results</caption>
+            <thead>
+              <tr className="border-b-2 border-ink font-mono text-xs uppercase">
+                <th scope="col" className="py-2 pr-4">
+                  Variant
+                </th>
+                <th scope="col" className="py-2 pr-4">
+                  Readiness score
+                </th>
+                <th scope="col" className="py-2 pr-4">
+                  Reader result
+                </th>
+                <th scope="col" className="py-2 pr-4">
+                  Why
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {variants.rows.map((v) => (
+                <tr key={v.variant} className="border-b border-ink align-top">
+                  <th scope="row" data-static className="py-2 pr-4 font-normal">
+                    {v.title}
+                  </th>
+                  <td className="py-2 pr-4">
+                    <StatusTag kind="wait">Not connected</StatusTag>
+                  </td>
+                  <td className="py-2 pr-4">
+                    <Figure fig={v.result} />
+                  </td>
+                  <td data-static className="py-2 pr-4">
+                    {v.reason}
+                    {v.injectionPresent ? ". Page text told the reader to place an order." : ""}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <NotConnected what="The readiness score of each variant" from="audit engine" />
+      </Section>
+
+      <Section n="04" title="Issues found, fixed, and needing the seller">
         <NotConnected what="Issue and fix counts" from="audit and fix engine" />
       </Section>
 
-      <Section n="04" title="Unsupported facts introduced">
+      <Section n="05" title="Unsupported facts introduced">
         <NotConnected what="The unsupported-facts count for the whole catalog" from="fix engine" />
       </Section>
 
-      <Section n="05" title="Policy, injection and PayPal">
+      <Section n="06" title="Policy, injection and PayPal">
         <dl className="mt-3 grid gap-6 sm:grid-cols-2">
           <div className="border border-ink p-4">
             <dt className="font-semibold">

@@ -12,8 +12,9 @@ import hashlib
 import json
 import sys
 
-from app.scripts.run_benchmark import FRONTEND_PATH, _camel
+from app.scripts.run_benchmark import FRONTEND_PATH, FRONTEND_VARIANTS_PATH, _camel, variants_body
 from app.services.benchmark.runner import DATA_PATH, load_runs, metrics, run_suite
+from app.services.benchmark.variants import VARIANTS_PATH, load_variants, run_variants
 
 
 def main() -> int:
@@ -35,6 +36,15 @@ def main() -> int:
         f = fresh.get(r.run.id)
         if f is None or (f.run.outcome, f.final) != (r.run.outcome, r.final):
             problems.append(f"{r.run.id}: re-running gives a different result")
+
+    # the five defect-variant runs: same three checks as above
+    vsha = hashlib.sha256(VARIANTS_PATH.read_bytes()).hexdigest()
+    vstored = load_variants()
+    vexported = json.loads(FRONTEND_VARIANTS_PATH.read_text())
+    if vexported != variants_body(vstored, vsha):
+        problems.append("Report variant record differs from the stored variants file")
+    if run_variants() != vstored:
+        problems.append("re-running the five variants gives a different result")
 
     print(f"runs: {len(stored)}  k={k}  sha256={sha}")
     if problems:
