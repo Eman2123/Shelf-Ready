@@ -3,7 +3,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 
-from app.api import agent_ready
+from app.api import agent_ready, audit
 from app.services.fixtures.demo_store import DEFAULT_POLICY, PUBLISHED_PRODUCTS
 from app.services.mcp_store import StoreService
 from app.services.mcp_store.server import build_server
@@ -22,6 +22,7 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(title="Shelf Ready API", version="0.1.0", lifespan=lifespan)
 app.include_router(agent_ready.router)
+app.include_router(audit.router)
 
 
 @app.get("/health")

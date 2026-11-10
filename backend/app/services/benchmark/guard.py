@@ -17,13 +17,14 @@ from app.contracts import (
     KeyScope,
     KeyVerification,
     KeyVerified,
+    OrderDraft,
+    OrderItemDraft,
     OrderStatus,
     PolicyDecision,
-    PolicyResult,
-    ReasonCode,
     VerifiedAgent,
 )
 from app.services.mcp_store.service import StoreService
+from app.services.policy import evaluate_policy
 
 BENCH_KEY = "bench-key-0001"
 
@@ -57,43 +58,42 @@ class BenchmarkGuard:
 
     def guarded_order(self, req: GuardedOrderRequest) -> GuardedOrderResult:
         rules = self.service.rules
-        total = 0
-        decision, reason, detail = PolicyDecision.ALLOW, ReasonCode.AUTO_APPROVED, None
-        denied = False
+        lines: list[OrderItemDraft] = []
+        store_id = next(iter(self.service.products.values())).store_id
+        currency = next(iter(self.service.products.values())).currency
         for item in req.items:
             quote = self.service.quotes[item.quote_id]
             product = self.service.products[item.product_id]
-            total += quote.unit_price_cents * item.quantity
-            if product.category not in rules.allowed_categories and not denied:
-                decision, reason, denied = (
-                    PolicyDecision.DENY,
-                    ReasonCode.CATEGORY_NOT_ALLOWED,
-                    True,
+            lines.append(
+                OrderItemDraft(
+                    product_id=product.id,
+                    variant_sku=item.variant_sku,
+                    quantity=item.quantity,
+                    unit_price_cents=quote.unit_price_cents,
+                    category=product.category,
+                    in_stock=quote.stock > 0,
                 )
-                detail = f"category {product.category} is not allowed"
-            elif item.quantity > rules.max_quantity and not denied:
-                decision, reason, denied = PolicyDecision.DENY, ReasonCode.OVER_MAX_QUANTITY, True
-                detail = f"{item.quantity} > max quantity {rules.max_quantity}"
-        if not denied:
-            if self.spent_today_cents + total > rules.daily_cap_cents:
-                decision, reason, denied = PolicyDecision.DENY, ReasonCode.OVER_DAILY_CAP, True
-                detail = f"{self.spent_today_cents + total} > daily cap {rules.daily_cap_cents}"
-            elif total > rules.hard_limit_cents:
-                decision, reason, denied = PolicyDecision.DENY, ReasonCode.OVER_HARD_LIMIT, True
-                detail = f"{total} > hard limit {rules.hard_limit_cents}"
-            elif total > rules.auto_approve_limit_cents:
-                decision, reason = PolicyDecision.NEEDS_APPROVAL, ReasonCode.OVER_AUTO_APPROVE_LIMIT
-                detail = f"{total} > auto-approve limit {rules.auto_approve_limit_cents}"
+            )
+        draft = OrderDraft(
+            store_id=store_id,
+            agent_id="agent_bench",
+            currency=currency,
+            items=lines,
+            total_cents=sum(i.unit_price_cents * i.quantity for i in lines),
+            spent_today_cents=self.spent_today_cents,
+        )
+        # The real policy engine decides (app/services/policy). Same rules, same order of checks.
+        decision = evaluate_policy(rules, draft)
         status = {
             PolicyDecision.ALLOW: OrderStatus.CREATED,
             PolicyDecision.NEEDS_APPROVAL: OrderStatus.NEEDS_APPROVAL,
             PolicyDecision.DENY: OrderStatus.DENIED,
-        }[decision]
+        }[decision.decision]
         self._orders += 1
         return GuardedOrderResult(
             order_id=f"ord_sim_{self._orders:03d}",
             status=status,
             paypal_order_id=None,  # simulated: no PayPal order exists
-            decision=PolicyResult(decision=decision, reason=reason, detail=detail),
+            decision=decision,
             approval_url=None,
         )
