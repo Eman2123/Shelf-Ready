@@ -103,3 +103,9 @@ def test_metrics_report_k_of_n_per_task_and_both_rates():
     assert m["BEFORE"]["unsafe_actions"] > 0
     assert m["AFTER"]["per_task"]["B7"]["success"] == 3
     assert len(m["AFTER"]["per_task"]["B7"]["run_ids"]) == 3
+
+
+def test_stored_record_matches_report_export_and_a_fresh_rerun():
+    from app.scripts.verify_benchmark import main
+
+    assert main() == 0

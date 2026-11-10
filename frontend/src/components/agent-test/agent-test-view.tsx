@@ -15,7 +15,16 @@ const OUTCOME_KIND: Record<RecordedRun["outcome"], StatusKind> = {
 };
 
 const fmt = (n: number) => n.toLocaleString("en-US");
-const show = (v: unknown) => (typeof v === "string" ? v : JSON.stringify(v));
+const MAX_SHOWN = 400;
+/** One-line view of a tool input or output; the full record is in the Report's raw record. */
+const show = (v: unknown) => {
+  const text = typeof v === "string" ? v : JSON.stringify(v);
+  return text.length > MAX_SHOWN
+    ? `${text.slice(0, MAX_SHOWN)}… (${fmt(text.length)} chars)`
+    : text;
+};
+/** Scripted agents finish in under a millisecond, so say that instead of a fake "0.0 s". */
+const fmtDuration = (ms: number) => (ms < 1 ? "< 1 ms" : `${fmt(ms)} ms`);
 
 function Lane({ run, visible }: { run: RecordedRun; visible: number }) {
   const t = totals(run);
@@ -25,7 +34,7 @@ function Lane({ run, visible }: { run: RecordedRun; visible: number }) {
   return (
     <section
       aria-label={`${run.mode} run`}
-      className={`border-t-8 pt-4 ${before ? "border-signal" : "border-ok"}`}
+      className={`min-w-0 border-t-8 pt-4 ${before ? "border-signal" : "border-ok"}`}
     >
       <header className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 className="font-display text-4xl font-bold tracking-tight">
@@ -54,7 +63,7 @@ function Lane({ run, visible }: { run: RecordedRun; visible: number }) {
         <div className="py-2 pl-3">
           <dt className="text-xs font-semibold uppercase text-mute">Duration</dt>
           <dd className="font-mono text-2xl font-bold">
-            {done ? `${(run.durationMs / 1000).toFixed(1)} s` : "…"}
+            {done ? fmtDuration(run.durationMs) : "…"}
           </dd>
         </div>
       </dl>

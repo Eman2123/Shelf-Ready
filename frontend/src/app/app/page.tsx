@@ -9,7 +9,7 @@ const screens = [
   { name: "Agent keys", owner: "P1", tier: 1, href: null },
   { name: "Agent test", owner: "P3", tier: 1, href: "/app/agent-test" },
   { name: "Orders and approvals", owner: "P1", tier: 1, href: null },
-  { name: "Report", owner: "P3", tier: 1, href: null },
+  { name: "Report", owner: "P3", tier: 1, href: "/app/report" },
 ] as const;
 
 export default function DashboardHome() {

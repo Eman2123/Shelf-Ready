@@ -11,7 +11,7 @@ const NAV = [
   { n: "03", label: "Fix review", href: "/app/fix-review" },
   { n: "04", label: "Agent test", href: "/app/agent-test" },
   { n: "05", label: "Orders", href: null },
-  { n: "06", label: "Report", href: null },
+  { n: "06", label: "Report", href: "/app/report" },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {

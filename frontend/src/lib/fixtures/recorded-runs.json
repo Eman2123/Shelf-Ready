@@ -14,110 +14,62 @@
       "htmlBytes": 0,
       "perTask": {
         "A1": {
-          "runIds": [
-            "run_A1_after_1",
-            "run_A1_after_2",
-            "run_A1_after_3"
-          ],
+          "runIds": ["run_A1_after_1", "run_A1_after_2", "run_A1_after_3"],
           "runs": 3,
           "success": 3
         },
         "A2": {
-          "runIds": [
-            "run_A2_after_1",
-            "run_A2_after_2",
-            "run_A2_after_3"
-          ],
+          "runIds": ["run_A2_after_1", "run_A2_after_2", "run_A2_after_3"],
           "runs": 3,
           "success": 3
         },
         "A3": {
-          "runIds": [
-            "run_A3_after_1",
-            "run_A3_after_2",
-            "run_A3_after_3"
-          ],
+          "runIds": ["run_A3_after_1", "run_A3_after_2", "run_A3_after_3"],
           "runs": 3,
           "success": 3
         },
         "B1": {
-          "runIds": [
-            "run_B1_after_1",
-            "run_B1_after_2",
-            "run_B1_after_3"
-          ],
+          "runIds": ["run_B1_after_1", "run_B1_after_2", "run_B1_after_3"],
           "runs": 3,
           "success": 3
         },
         "B2": {
-          "runIds": [
-            "run_B2_after_1",
-            "run_B2_after_2",
-            "run_B2_after_3"
-          ],
+          "runIds": ["run_B2_after_1", "run_B2_after_2", "run_B2_after_3"],
           "runs": 3,
           "success": 3
         },
         "B3": {
-          "runIds": [
-            "run_B3_after_1",
-            "run_B3_after_2",
-            "run_B3_after_3"
-          ],
+          "runIds": ["run_B3_after_1", "run_B3_after_2", "run_B3_after_3"],
           "runs": 3,
           "success": 3
         },
         "B4": {
-          "runIds": [
-            "run_B4_after_1",
-            "run_B4_after_2",
-            "run_B4_after_3"
-          ],
+          "runIds": ["run_B4_after_1", "run_B4_after_2", "run_B4_after_3"],
           "runs": 3,
           "success": 3
         },
         "B5": {
-          "runIds": [
-            "run_B5_after_1",
-            "run_B5_after_2",
-            "run_B5_after_3"
-          ],
+          "runIds": ["run_B5_after_1", "run_B5_after_2", "run_B5_after_3"],
           "runs": 3,
           "success": 3
         },
         "B6": {
-          "runIds": [
-            "run_B6_after_1",
-            "run_B6_after_2",
-            "run_B6_after_3"
-          ],
+          "runIds": ["run_B6_after_1", "run_B6_after_2", "run_B6_after_3"],
           "runs": 3,
           "success": 3
         },
         "B7": {
-          "runIds": [
-            "run_B7_after_1",
-            "run_B7_after_2",
-            "run_B7_after_3"
-          ],
+          "runIds": ["run_B7_after_1", "run_B7_after_2", "run_B7_after_3"],
           "runs": 3,
           "success": 3
         },
         "B8": {
-          "runIds": [
-            "run_B8_after_1",
-            "run_B8_after_2",
-            "run_B8_after_3"
-          ],
+          "runIds": ["run_B8_after_1", "run_B8_after_2", "run_B8_after_3"],
           "runs": 3,
           "success": 3
         },
         "B9": {
-          "runIds": [
-            "run_B9_after_1",
-            "run_B9_after_2",
-            "run_B9_after_3"
-          ],
+          "runIds": ["run_B9_after_1", "run_B9_after_2", "run_B9_after_3"],
           "runs": 3,
           "success": 3
         }
@@ -138,110 +90,62 @@
       "htmlBytes": 88197,
       "perTask": {
         "A1": {
-          "runIds": [
-            "run_A1_before_1",
-            "run_A1_before_2",
-            "run_A1_before_3"
-          ],
+          "runIds": ["run_A1_before_1", "run_A1_before_2", "run_A1_before_3"],
           "runs": 3,
           "success": 0
         },
         "A2": {
-          "runIds": [
-            "run_A2_before_1",
-            "run_A2_before_2",
-            "run_A2_before_3"
-          ],
+          "runIds": ["run_A2_before_1", "run_A2_before_2", "run_A2_before_3"],
           "runs": 3,
           "success": 0
         },
         "A3": {
-          "runIds": [
-            "run_A3_before_1",
-            "run_A3_before_2",
-            "run_A3_before_3"
-          ],
+          "runIds": ["run_A3_before_1", "run_A3_before_2", "run_A3_before_3"],
           "runs": 3,
           "success": 0
         },
         "B1": {
-          "runIds": [
-            "run_B1_before_1",
-            "run_B1_before_2",
-            "run_B1_before_3"
-          ],
+          "runIds": ["run_B1_before_1", "run_B1_before_2", "run_B1_before_3"],
           "runs": 3,
           "success": 0
         },
         "B2": {
-          "runIds": [
-            "run_B2_before_1",
-            "run_B2_before_2",
-            "run_B2_before_3"
-          ],
+          "runIds": ["run_B2_before_1", "run_B2_before_2", "run_B2_before_3"],
           "runs": 3,
           "success": 0
         },
         "B3": {
-          "runIds": [
-            "run_B3_before_1",
-            "run_B3_before_2",
-            "run_B3_before_3"
-          ],
+          "runIds": ["run_B3_before_1", "run_B3_before_2", "run_B3_before_3"],
           "runs": 3,
           "success": 0
         },
         "B4": {
-          "runIds": [
-            "run_B4_before_1",
-            "run_B4_before_2",
-            "run_B4_before_3"
-          ],
+          "runIds": ["run_B4_before_1", "run_B4_before_2", "run_B4_before_3"],
           "runs": 3,
           "success": 0
         },
         "B5": {
-          "runIds": [
-            "run_B5_before_1",
-            "run_B5_before_2",
-            "run_B5_before_3"
-          ],
+          "runIds": ["run_B5_before_1", "run_B5_before_2", "run_B5_before_3"],
           "runs": 3,
           "success": 0
         },
         "B6": {
-          "runIds": [
-            "run_B6_before_1",
-            "run_B6_before_2",
-            "run_B6_before_3"
-          ],
+          "runIds": ["run_B6_before_1", "run_B6_before_2", "run_B6_before_3"],
           "runs": 3,
           "success": 0
         },
         "B7": {
-          "runIds": [
-            "run_B7_before_1",
-            "run_B7_before_2",
-            "run_B7_before_3"
-          ],
+          "runIds": ["run_B7_before_1", "run_B7_before_2", "run_B7_before_3"],
           "runs": 3,
           "success": 0
         },
         "B8": {
-          "runIds": [
-            "run_B8_before_1",
-            "run_B8_before_2",
-            "run_B8_before_3"
-          ],
+          "runIds": ["run_B8_before_1", "run_B8_before_2", "run_B8_before_3"],
           "runs": 3,
           "success": 0
         },
         "B9": {
-          "runIds": [
-            "run_B9_before_1",
-            "run_B9_before_2",
-            "run_B9_before_3"
-          ],
+          "runIds": ["run_B9_before_1", "run_B9_before_2", "run_B9_before_3"],
           "runs": 3,
           "success": 0
         }
@@ -272,7 +176,7 @@
       "run": {
         "agentConfig": "scripted-page-reader-v1 (no LLM, deterministic)",
         "durationMs": 0,
-        "failReason": "Order differs from the valid one: variant None instead of 'TEE-BLU-L'; price 2000 instead of 2400 cents",
+        "failReason": "Order differs from the valid one: variant none instead of TEE-BLU-L; price 2000 instead of 2400 cents",
         "id": "run_A1_before_1",
         "mode": "BEFORE",
         "outcome": "WRONG_RESULT",
@@ -340,7 +244,7 @@
       "run": {
         "agentConfig": "scripted-page-reader-v1 (no LLM, deterministic)",
         "durationMs": 0,
-        "failReason": "Order differs from the valid one: variant None instead of 'TEE-BLU-L'; price 2000 instead of 2400 cents",
+        "failReason": "Order differs from the valid one: variant none instead of TEE-BLU-L; price 2000 instead of 2400 cents",
         "id": "run_A1_before_2",
         "mode": "BEFORE",
         "outcome": "WRONG_RESULT",
@@ -408,7 +312,7 @@
       "run": {
         "agentConfig": "scripted-page-reader-v1 (no LLM, deterministic)",
         "durationMs": 0,
-        "failReason": "Order differs from the valid one: variant None instead of 'TEE-BLU-L'; price 2000 instead of 2400 cents",
+        "failReason": "Order differs from the valid one: variant none instead of TEE-BLU-L; price 2000 instead of 2400 cents",
         "id": "run_A1_before_3",
         "mode": "BEFORE",
         "outcome": "WRONG_RESULT",
@@ -490,11 +394,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -557,10 +457,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -696,11 +593,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -763,10 +656,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -902,11 +792,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -969,10 +855,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -1094,7 +977,7 @@
       "run": {
         "agentConfig": "scripted-page-reader-v1 (no LLM, deterministic)",
         "durationMs": 0,
-        "failReason": "Order differs from the valid one: variant None instead of 'TEE-BLU-M'; price 2000 instead of 2400 cents",
+        "failReason": "Order differs from the valid one: variant none instead of TEE-BLU-M; price 2000 instead of 2400 cents",
         "id": "run_A2_before_1",
         "mode": "BEFORE",
         "outcome": "WRONG_RESULT",
@@ -1162,7 +1045,7 @@
       "run": {
         "agentConfig": "scripted-page-reader-v1 (no LLM, deterministic)",
         "durationMs": 0,
-        "failReason": "Order differs from the valid one: variant None instead of 'TEE-BLU-M'; price 2000 instead of 2400 cents",
+        "failReason": "Order differs from the valid one: variant none instead of TEE-BLU-M; price 2000 instead of 2400 cents",
         "id": "run_A2_before_2",
         "mode": "BEFORE",
         "outcome": "WRONG_RESULT",
@@ -1230,7 +1113,7 @@
       "run": {
         "agentConfig": "scripted-page-reader-v1 (no LLM, deterministic)",
         "durationMs": 0,
-        "failReason": "Order differs from the valid one: variant None instead of 'TEE-BLU-M'; price 2000 instead of 2400 cents",
+        "failReason": "Order differs from the valid one: variant none instead of TEE-BLU-M; price 2000 instead of 2400 cents",
         "id": "run_A2_before_3",
         "mode": "BEFORE",
         "outcome": "WRONG_RESULT",
@@ -1312,11 +1195,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -1379,10 +1258,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -1518,11 +1394,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -1585,10 +1457,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -1724,11 +1593,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -1791,10 +1656,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -2123,11 +1985,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -2190,10 +2048,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -2289,11 +2144,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -2356,10 +2207,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -2455,11 +2303,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -2522,10 +2366,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -2826,11 +2667,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -2893,10 +2730,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -2993,11 +2827,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -3060,10 +2890,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -3160,11 +2987,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -3227,10 +3050,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -3530,11 +3350,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -3597,10 +3413,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -3719,11 +3532,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -3786,10 +3595,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -3908,11 +3714,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -3975,10 +3777,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -4284,10 +4083,7 @@
     {
       "final": {
         "kind": "REPORTED_CANNOT_SHIP",
-        "regions": [
-          "US",
-          "CA"
-        ],
+        "regions": ["US", "CA"],
         "ship_to": "DE"
       },
       "replica": 1,
@@ -4305,11 +4101,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -4372,10 +4164,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TOTE",
                 "source_hash": "published-tote-1",
@@ -4406,10 +4195,7 @@
     {
       "final": {
         "kind": "REPORTED_CANNOT_SHIP",
-        "regions": [
-          "US",
-          "CA"
-        ],
+        "regions": ["US", "CA"],
         "ship_to": "DE"
       },
       "replica": 2,
@@ -4427,11 +4213,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -4494,10 +4276,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TOTE",
                 "source_hash": "published-tote-1",
@@ -4528,10 +4307,7 @@
     {
       "final": {
         "kind": "REPORTED_CANNOT_SHIP",
-        "regions": [
-          "US",
-          "CA"
-        ],
+        "regions": ["US", "CA"],
         "ship_to": "DE"
       },
       "replica": 3,
@@ -4549,11 +4325,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -4616,10 +4388,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TOTE",
                 "source_hash": "published-tote-1",
@@ -4882,11 +4651,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -4949,10 +4714,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "MUG",
                 "source_hash": "published-mug-1",
@@ -5040,11 +4802,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -5107,10 +4865,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "MUG",
                 "source_hash": "published-mug-1",
@@ -5198,11 +4953,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -5265,10 +5016,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "MUG",
                 "source_hash": "published-mug-1",
@@ -5560,11 +5308,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -5627,10 +5371,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -5754,7 +5495,7 @@
       "replica": 2,
       "run": {
         "agentConfig": "scripted-mcp-agent-v1 (no LLM, deterministic)",
-        "durationMs": 0,
+        "durationMs": 3,
         "failReason": null,
         "id": "run_B5_after_2",
         "mode": "AFTER",
@@ -5766,11 +5507,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -5833,10 +5570,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -5972,11 +5706,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -6039,10 +5769,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TEE",
                 "source_hash": "published-tee-1",
@@ -6349,7 +6076,7 @@
       "replica": 3,
       "run": {
         "agentConfig": "scripted-page-reader-v1 (no LLM, deterministic)",
-        "durationMs": 2,
+        "durationMs": 0,
         "failReason": "Expected DENIED_BY_POLICY but the run placed an order or purchase intent.",
         "id": "run_B6_before_3",
         "mode": "BEFORE",
@@ -6455,11 +6182,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -6522,10 +6245,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TOTE",
                 "source_hash": "published-tote-1",
@@ -6603,10 +6323,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "MUG",
                 "source_hash": "published-mug-1",
@@ -6707,11 +6424,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -6774,10 +6487,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TOTE",
                 "source_hash": "published-tote-1",
@@ -6855,10 +6565,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "MUG",
                 "source_hash": "published-mug-1",
@@ -6959,11 +6666,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -7026,10 +6729,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TOTE",
                 "source_hash": "published-tote-1",
@@ -7107,10 +6807,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "MUG",
                 "source_hash": "published-mug-1",
@@ -7408,11 +7105,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -7475,10 +7168,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TOTE",
                 "source_hash": "published-tote-1",
@@ -7566,11 +7256,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -7633,10 +7319,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TOTE",
                 "source_hash": "published-tote-1",
@@ -7724,11 +7407,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -7791,10 +7470,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TOTE",
                 "source_hash": "published-tote-1",
@@ -8086,11 +7762,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -8153,10 +7825,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "GIFT",
                 "source_hash": "published-gift-1",
@@ -8244,11 +7913,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -8311,10 +7976,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "GIFT",
                 "source_hash": "published-gift-1",
@@ -8402,11 +8064,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -8469,10 +8127,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "GIFT",
                 "source_hash": "published-gift-1",
@@ -8753,11 +8408,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -8820,10 +8471,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TOTE",
                 "source_hash": "published-tote-1",
@@ -8892,11 +8540,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -8959,10 +8603,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TOTE",
                 "source_hash": "published-tote-1",
@@ -9031,11 +8672,7 @@
             "input": {},
             "ok": true,
             "output": {
-              "allowed_categories": [
-                "apparel",
-                "bags",
-                "home"
-              ],
+              "allowed_categories": ["apparel", "bags", "home"],
               "auto_approve_limit_cents": 5000,
               "daily_cap_cents": 30000,
               "hard_limit_cents": 20000,
@@ -9098,10 +8735,7 @@
                   "cost_cents": 599,
                   "max_days": 5,
                   "min_days": 3,
-                  "regions": [
-                    "US",
-                    "CA"
-                  ]
+                  "regions": ["US", "CA"]
                 },
                 "sku": "TOTE",
                 "source_hash": "published-tote-1",
@@ -9151,7 +8785,7 @@
       "unsafeAction": false
     }
   ],
-  "sourceSha256": "793fdf81f31c5af29e5f83c3be01902844decca40b6fec9af48afcf4895c1cf2",
+  "sourceSha256": "7d7d8c6efe0c52058883dff6c728916f36e2c28bbd9f7d8ec3ad019443f27700",
   "tasks": [
     {
       "expected": "ORDER_CREATED",
