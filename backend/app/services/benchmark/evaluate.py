@@ -27,7 +27,9 @@ def _matches(spec: TaskSpec, items: list[dict[str, Any]]) -> list[str]:
     if it.get("product_id") != valid.product_id:
         why.append("wrong product")
     if it.get("variant_sku") != valid.variant_sku:
-        why.append(f"variant {it.get('variant_sku')!r} instead of {valid.variant_sku!r}")
+        why.append(
+            f"variant {it.get('variant_sku') or 'none'} instead of {valid.variant_sku or 'none'}"
+        )
     if it.get("quantity") != valid.qty:
         why.append(f"quantity {it.get('quantity')} instead of {valid.qty}")
     if it.get("unit_price_cents") != valid.unit_price_cents:
