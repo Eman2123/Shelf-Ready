@@ -95,7 +95,7 @@ function Lane({ run, visible }: { run: RecordedRun; visible: number }) {
   );
 }
 
-export function AgentTestView() {
+function AgentTestInner() {
   const [taskId, setTaskId] = useState(recorded.tasks[0].id);
   const [tick, setTick] = useState(0);
   const [replayKey, setReplayKey] = useState(0);
@@ -170,4 +170,18 @@ export function AgentTestView() {
       </div>
     </div>
   );
+}
+
+export function AgentTestView() {
+  if (recorded.tasks.length === 0) {
+    return (
+      <div role="status" className="border-2 border-dashed border-mute p-6 text-sm">
+        <p className="font-bold">No recorded runs yet.</p>
+        <p className="text-mute">
+          Run <code>make bench-run</code> in the backend to record the benchmark, then reload.
+        </p>
+      </div>
+    );
+  }
+  return <AgentTestInner />;
 }
