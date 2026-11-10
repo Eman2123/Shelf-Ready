@@ -25,11 +25,13 @@ Be exact about this before you read any number in the Report.
 | Store MCP (4 tools), quote binding, key check hook | Runs |
 | Benchmark: 12 tasks, BEFORE and AFTER agents, evaluator, k=3 runs, recorded replay | Runs |
 | Defect variants (n=5), Report screen, Fix review, Agent test | Runs |
-| Audit engine and readiness score | **Not connected** (shown as "Not connected", never guessed) |
-| Fix engine and provenance validator | **Not connected** (Fix review shows fixtures) |
-| Policy engine, agent keys, PayPal orders and webhooks | **Not connected** |
+| Audit engine and readiness score (9 dimensions, critical cap, waterfall, `run_id` on every check), read-only `GET /api/audit/demo-store` | Built and unit-tested. Not yet wired to the Report, which still shows recorded runs only |
+| Fix engine, provenance validator, versions and rollback | Built and unit-tested. Fix review still shows fixtures |
+| Policy engine (`evaluate_policy`), agent keys (hashed, revoke, expiry, rate limit, spend) | Built and unit-tested. The benchmark guard uses `evaluate_policy` and reproduces the recorded 72 runs; keys are not yet wired into the running server |
+| Hash-chained run events, `verify_chain`, `verify_receipt` (chains the stored benchmark runs) | Built and unit-tested. The Report does not show the chain yet; the script covers benchmark runs only |
+| PayPal orders, authorize/capture, verified webhooks, read-only witness | **Not connected** (needs sandbox credentials) |
 
-The AFTER benchmark runs use `BenchmarkGuard` (`backend/app/services/benchmark/guard.py`), a stand-in that applies the published order rules. It never talks to PayPal and never creates a PayPal order; every order it returns has `paypal_order_id: null`. It is replaced by the real policy and key functions when those are connected, and the Report says so.
+The AFTER benchmark runs use `BenchmarkGuard` (`backend/app/services/benchmark/guard.py`), a stand-in that applies the published order rules. The real policy engine (`app/services/policy`) implements the same rules as a pure function and is unit-tested; swapping it into the guard is the integration step. It never talks to PayPal and never creates a PayPal order; every order it returns has `paypal_order_id: null`. It is replaced by the real policy and key functions when those are connected, and the Report says so.
 
 **No language model is used anywhere in the benchmark.** Both buyer agents are deterministic scripts, and every run is labelled `no LLM`. No real LLM run is claimed. The one-line honest reading of the results: the *store* changes what an agent can do safely, measured with a fixed script.
 
