@@ -18,6 +18,12 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   return (
     <div className="min-h-screen">
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-ink focus:p-3 focus:text-paper"
+      >
+        Skip to content
+      </a>
       <header className="border-b-4 border-double border-ink">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-8 gap-y-3 px-4 py-4">
           <Link href="/app" className="font-display text-2xl font-bold tracking-tight">
@@ -60,7 +66,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           <p className="font-mono text-xs font-bold uppercase">PayPal sandbox only</p>
         </div>
       </header>
-      <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
+      <main id="main" tabIndex={-1} className="mx-auto max-w-6xl px-4 py-8">
+        {children}
+      </main>
     </div>
   );
 }

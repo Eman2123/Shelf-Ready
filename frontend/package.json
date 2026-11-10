@@ -17,7 +17,8 @@
     "test:watch": "vitest",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "gen:api": "openapi-typescript http://localhost:8000/openapi.json -o src/lib/api/schema.d.ts"
+    "gen:api": "openapi-typescript http://localhost:8000/openapi.json -o src/lib/api/schema.d.ts",
+    "a11y": "node scripts/axe.cjs"
   },
   "dependencies": {
     "ag-grid-community": "^34.0.0",
