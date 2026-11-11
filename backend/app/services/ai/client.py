@@ -18,6 +18,7 @@ import httpx
 
 ROOT = Path(__file__).resolve().parents[4]  # repo root
 ENV_FILES = (ROOT / "backend" / ".env", ROOT / ".env", ROOT / ".env.local")
+MAX_TOKENS = 4096
 DEFAULT_URLS = {
     "aiml": "https://api.aimlapi.com/v1",
     "gemini": "https://generativelanguage.googleapis.com/v1beta/openai/",
@@ -91,6 +92,38 @@ class ChatClient:
     ) -> None:
         self.config = config
         self._http = httpx.Client(transport=transport, timeout=timeout)
+        # Some models (e.g. Claude on AIML) do not document temperature or JSON mode. On a 400 we
+        # retry once without them and remember it, so the record can say what was really sent.
+        self.send_temperature = True
+        self.send_json_mode = True
+        self.last_model: str | None = None  # model id the provider says answered (aliases move)
+
+    @property
+    def temperature_note(self) -> str:
+        return "temperature 0" if self.send_temperature else "provider default temperature"
+
+    def _post(
+        self, messages: list[dict[str, Any]], tools: list[dict[str, Any]] | None, json_mode: bool
+    ) -> httpx.Response:
+        body: dict[str, Any] = {
+            "model": self.config.model,
+            "messages": messages,
+            "max_tokens": MAX_TOKENS,
+        }
+        if self.send_temperature:
+            body["temperature"] = 0
+        if tools:
+            body["tools"] = tools
+        if json_mode and self.send_json_mode:
+            body["response_format"] = {"type": "json_object"}
+        try:
+            return self._http.post(
+                f"{self.config.base_url}/chat/completions",
+                json=body,
+                headers={"Authorization": f"Bearer {self.config.api_key}"},
+            )
+        except httpx.HTTPError as e:
+            raise LLMError(f"request failed: {type(e).__name__}") from None
 
     def chat(
         self,
@@ -98,23 +131,13 @@ class ChatClient:
         tools: list[dict[str, Any]] | None = None,
         json_mode: bool = False,
     ) -> ChatReply:
-        body: dict[str, Any] = {
-            "model": self.config.model,
-            "messages": messages,
-            "temperature": 0,
-        }
-        if tools:
-            body["tools"] = tools
-        if json_mode:
-            body["response_format"] = {"type": "json_object"}
-        try:
-            resp = self._http.post(
-                f"{self.config.base_url}/chat/completions",
-                json=body,
-                headers={"Authorization": f"Bearer {self.config.api_key}"},
-            )
-        except httpx.HTTPError as e:
-            raise LLMError(f"request failed: {type(e).__name__}") from None
+        resp = self._post(messages, tools, json_mode)
+        if resp.status_code == 400 and (
+            self.send_temperature or (json_mode and self.send_json_mode)
+        ):
+            self.send_temperature = False
+            self.send_json_mode = False
+            resp = self._post(messages, tools, json_mode)
         if resp.status_code >= 400:
             raise LLMError(f"provider returned HTTP {resp.status_code}")
         try:
@@ -130,10 +153,5 @@ class ChatClient:
             ]
         except (ValueError, KeyError, IndexError, TypeError):
             raise LLMError("provider reply was not a valid chat completion") from None
-        return ChatReply(
-            msg.get("content"),
-            calls,
-            data.get("model", self.config.model),
-            data.get("usage", {}),
-            msg,
-        )
+        self.last_model = data.get("model") or self.config.model
+        return ChatReply(msg.get("content"), calls, self.last_model, data.get("usage", {}), msg)

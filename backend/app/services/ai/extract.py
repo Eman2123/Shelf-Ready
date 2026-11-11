@@ -26,6 +26,15 @@ SYSTEM = (
 )
 
 
+def _strip_fence(text: str) -> str:
+    """Models without JSON mode often wrap the object in a ```json fence."""
+    text = text.strip()
+    if text.startswith("```"):
+        text = text.split("\n", 1)[1] if "\n" in text else ""
+        text = text.rsplit("```", 1)[0]
+    return text.strip()
+
+
 def propose_with_llm(
     client: ChatClient,
     *,
@@ -47,7 +56,7 @@ def propose_with_llm(
         json_mode=True,
     )
     try:
-        answers = {a["field"]: a for a in json.loads(reply.content or "")["fixes"]}
+        answers = {a["field"]: a for a in json.loads(_strip_fence(reply.content or ""))["fixes"]}
     except (ValueError, KeyError, TypeError):
         raise LLMError("model did not return the requested JSON") from None
     out: list[FixRecord] = []

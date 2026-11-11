@@ -96,8 +96,8 @@ TOOLS = [
 ]
 
 
-def agent_config(model: str) -> str:
-    return f"{model} (real LLM, temperature 0, store MCP tools)"
+def agent_config(model: str, temperature_note: str = "temperature 0") -> str:
+    return f"{model} (real LLM, {temperature_note}, store MCP tools)"
 
 
 def run_llm(

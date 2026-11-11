@@ -152,8 +152,10 @@ To connect it, put these in `backend/.env` (git-ignored, server side only, never
 ```
 AI_PROVIDER=aiml            # or gemini
 AIML_API_KEY=...
-AIML_MODEL=...              # exact model id from your provider
+AIML_MODEL=anthropic/claude-fable-latest   # Claude Fable on AIML (id from the AIML docs)
 ```
+
+Notes on Fable via AIML: it uses AIML's `/v1/chat/completions` with OpenAI-style tools. AIML's page for this model does not list `temperature` or JSON mode, so if the provider answers 400 the client retries once without them and the run record says "provider default temperature" instead of "temperature 0". `*-latest` is an alias that can move, so each run records the model id the provider reports back; for a reproducible record, set `AIML_MODEL` to a pinned version id from the AIML model list.
 
 Then `make llm-check` (config only, no call), and `make llm-record ARGS="--tasks A2,B4 --k 1"`. Without a key it prints "LLM not connected" and exits without a run. Results from a model are not deterministic, so report them with the model id and k, never as a replacement for the scripted record.
 

@@ -26,11 +26,12 @@ def run_llm_one(client: ChatClient, task_id: str, replica: int) -> RunRecord:
     spec = TASKS_BY_ID[task_id]
     service, guard = _fresh_store(spec, DEFAULT_POLICY)
     result = run_llm(spec, service, guard, client)
+    answered_by = client.last_model or client.config.model  # an alias like *-latest can move
     outcome, reason, unsafe = evaluate(spec, result.final)
     run = AgentRun(
         id=f"run_{task_id}_llm_{replica}",
         mode=AgentMode.AFTER,
-        agent_config=agent_config(client.config.model),
+        agent_config=agent_config(answered_by, client.temperature_note),
         task_id=task_id,
         steps=result.steps,
         outcome=outcome,
@@ -53,8 +54,8 @@ def save_llm_runs(
     body = {
         "label": "real LLM runs (not the scripted no-LLM record)",
         "provider": client.config.provider,
-        "model": client.config.model,
-        "temperature": 0,
+        "requested_model": client.config.model,
+        "temperature": 0 if client.send_temperature else "provider default (param rejected)",
         "k": k,
         "recorded_at": datetime.now(UTC).isoformat(),
         "runs": [r.model_dump(mode="json") for r in records],

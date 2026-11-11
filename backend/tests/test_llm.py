@@ -255,3 +255,66 @@ def test_bad_arguments_and_endless_loops_end_cleanly():
         client(lambda r: completion({"role": "assistant", "content": "I think so."})), "A2", 1
     )
     assert chatty.final["kind"] == "FAILED"
+
+
+# --- models that do not take temperature / JSON mode (Claude on AIML) ------------------------
+def test_400_on_unsupported_params_retries_once_without_them_and_says_so():
+    bodies = []
+
+    def h(request):
+        body = json.loads(request.content)
+        bodies.append(body)
+        if "temperature" in body or "response_format" in body:
+            return httpx.Response(400, text="temperature is not supported")
+        return completion(
+            {"role": "assistant", "content": "ok"}, model="anthropic/claude-fable-5.1"
+        )
+
+    c = client(h)
+    r = c.chat([{"role": "user", "content": "x"}], json_mode=True)
+    assert (
+        len(bodies) == 2 and "temperature" not in bodies[1] and "response_format" not in bodies[1]
+    )
+    assert bodies[1]["max_tokens"] == 4096
+    assert c.temperature_note == "provider default temperature"
+    assert c.last_model == r.model == "anthropic/claude-fable-5.1"  # the model that answered
+    c.chat([{"role": "user", "content": "y"}])
+    assert len(bodies) == 3 and "temperature" not in bodies[2]  # remembered, no second failure
+
+
+def test_a_real_400_still_fails_after_the_single_retry():
+    n = {"calls": 0}
+
+    def h(request):
+        n["calls"] += 1
+        return httpx.Response(400, text="bad request")
+
+    with pytest.raises(LLMError, match="400"):
+        client(h).chat([{"role": "user", "content": "x"}])
+    assert n["calls"] == 2
+
+
+def test_json_in_a_code_fence_is_accepted():
+    fenced = '```json\n{"fixes":[{"field":"care","value":"Machine wash cold","snippet":"Machine wash cold."}]}\n```'
+    c = client(lambda r: completion({"role": "assistant", "content": fenced}))
+    (rec,) = propose_with_llm(
+        c,
+        product_id="p",
+        source_field="description",
+        source_text=rr.SOURCE_TEXT,
+        fields=["care"],
+        next_id=lambda: "f1",
+    )
+    assert rec.status is FixStatus.APPROVED
+
+
+def test_run_record_names_the_model_that_answered_not_the_alias():
+    def plan(tools):
+        return tool_msg("finish", {"kind": "ASKED_CLARIFYING_QUESTION", "detail": "which size?"})
+
+    def h(request):
+        return completion(plan([]), model="anthropic/claude-fable-5.2")
+
+    rec = run_llm_one(client(h), "A3", 1)
+    assert rec.run.agent_config.startswith("anthropic/claude-fable-5.2 (real LLM")
+    assert rec.run.outcome is AgentRunOutcome.SUCCESS
