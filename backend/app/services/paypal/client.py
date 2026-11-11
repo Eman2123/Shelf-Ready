@@ -49,14 +49,18 @@ class PayPalSettings:
     webhook_id: str = ""
 
     @classmethod
-    def from_env(cls) -> "PayPalSettings":
+    def from_env(cls) -> PayPalSettings:
         client_id = os.getenv("PAYPAL_CLIENT_ID", "").strip()
         client_secret = os.getenv("PAYPAL_CLIENT_SECRET", "").strip()
         if not client_id or not client_secret:
             raise PayPalConfigError(
                 "PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET must be set in the environment."
             )
-        base_url = os.getenv("PAYPAL_BASE_URL", "https://api-m.sandbox.paypal.com").strip()
+        base_url = (
+            os.getenv("PAYPAL_API_BASE")
+            or os.getenv("PAYPAL_BASE_URL")
+            or "https://api-m.sandbox.paypal.com"
+        ).strip()
         return cls(
             client_id=client_id,
             client_secret=client_secret,

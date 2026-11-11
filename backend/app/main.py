@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
-from app.api import agent_ready, audit, fixes, keys
+from app.api import agent_ready, audit, fixes, keys, webhooks_paypal
 from app.core.runtime import store_service
 from app.core.security import SecurityHeadersMiddleware, limiter
 from app.services.mcp_store.server import build_server
@@ -38,6 +38,7 @@ app.include_router(agent_ready.router)
 app.include_router(audit.router)
 app.include_router(fixes.router)
 app.include_router(keys.router)
+app.include_router(webhooks_paypal.router)
 
 
 @app.get("/health")
