@@ -1,8 +1,9 @@
 """End to end (PRD Day 5 e2e): import -> store MCP -> benchmark -> report numbers.
 
-Scope, stated plainly: the audit and fix engine (A) is not connected, so nothing here turns the
-imported messy catalog into the published one. The MCP serves the frozen published fixture, and
-the money step is the BenchmarkGuard stand-in (no PayPal order exists). What this proves is that
+Scope, stated plainly: nothing here turns the imported messy catalog into the published one
+(the published catalog is hand-written, not fix-engine output). The MCP serves the frozen published fixture, and
+the money step is BenchmarkGuard on the real KeyStore and policy engine (PayPal is not
+connected, so no PayPal order exists). What this proves is that
 every hop that exists today agrees with the next one, and that the numbers the Report shows are
 recomputed from stored runs, not typed in.
 """
@@ -16,7 +17,7 @@ from pathlib import Path
 from mcp.client.client import Client
 
 from app.scripts.run_benchmark import export_frontend, export_variants
-from app.services.benchmark.guard import BENCH_KEY, BenchmarkGuard
+from app.services.benchmark.guard import BenchmarkGuard
 from app.services.benchmark.runner import BENCH_NOW, load_runs, metrics, run_suite, save_runs
 from app.services.benchmark.variants import load_variants, run_variants, save_variants
 from app.services.fixtures.demo_store import DEFAULT_POLICY, PUBLISHED_PRODUCTS
@@ -27,12 +28,12 @@ from app.services.mcp_store.server import build_server
 CSV = Path(__file__).resolve().parents[1] / "data" / "demo" / "messy_catalog.csv"
 
 
-def _store() -> StoreService:
+def _store() -> tuple[StoreService, BenchmarkGuard]:
     products = {k: v.model_copy(deep=True) for k, v in PUBLISHED_PRODUCTS.items()}
     service = StoreService(products, DEFAULT_POLICY, clock=lambda: BENCH_NOW)
     guard = BenchmarkGuard(service)
     service.guarded_order, service.verify_key = guard.guarded_order, guard.verify_key
-    return service
+    return service, guard
 
 
 def test_import_keeps_unstated_facts_unstated():
@@ -43,7 +44,7 @@ def test_import_keeps_unstated_facts_unstated():
 
 
 def test_mcp_client_buys_the_exact_variant_with_no_html_and_a_checked_key():
-    service = _store()
+    service, guard = _store()
 
     async def buy(agent_key: str):
         async with Client(build_server(service)) as client:
@@ -64,7 +65,7 @@ def test_mcp_client_buys_the_exact_variant_with_no_html_and_a_checked_key():
             )
             return quote, order.structured_content
 
-    quote, order = asyncio.run(buy(BENCH_KEY))
+    quote, order = asyncio.run(buy(guard.raw_key))
     assert quote["unit_price_cents"] == 2400  # exact, where the messy page said "from $20"
     assert order["status"] == "CREATED"
     assert order["paypal_order_id"] is None  # simulated: this repo never claims a PayPal order

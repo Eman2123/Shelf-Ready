@@ -24,7 +24,7 @@ from app.contracts import (
     GuardedOrderItem,
     SearchProductsInput,
 )
-from app.services.benchmark.guard import BENCH_KEY, BenchmarkGuard
+from app.services.benchmark.guard import BenchmarkGuard
 from app.services.benchmark.tasks import TaskSpec, Want
 from app.services.fixtures.messy_store import MESSY_PAGES, PAGE_FOR_PRODUCT
 from app.services.mcp_store.service import StoreService
@@ -204,7 +204,9 @@ def run_after(spec: TaskSpec, service: StoreService, guard: BenchmarkGuard) -> A
         idempotency_key=f"idem-{spec.task.id}-bench",
     )
     result = t.call(
-        "create_order", args.model_dump(mode="json"), lambda: service.create_order(args, BENCH_KEY)
+        "create_order",
+        args.model_dump(mode="json"),
+        lambda: service.create_order(args, guard.raw_key),
     )
     items_out = [
         {

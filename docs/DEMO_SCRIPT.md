@@ -13,7 +13,7 @@ The audit engine, fix engine, policy engine, agent keys and PayPal checkout are 
 | AFTER agent: 4 tool calls, HTML bytes 0, order $24 | Real, recorded | `run_A2_after_1`, SUCCESS, 4 calls, 0 bytes, 2400 cents |
 | PayPal authorized, webhook verified | **[BLOCKED on A]** | Do not show. The order is simulated (`paypal_order_id` is null) |
 | "$180 order stopped" | Use the recorded $72 order | `run_B5_after_1`: NEEDS_APPROVAL, $72 > $50. No $180 task exists |
-| Readiness score and waterfall | **[BLOCKED on A]** | Report shows "Not connected" |
+| Readiness score and waterfall | Real, recorded audit (see Report); the 5 variants still show "Not connected" for score | Quote the run id shown next to each number |
 
 Agents in the video are scripted baselines. Say "scripted agent, no language model". Do not say "AI agent" for them.
 

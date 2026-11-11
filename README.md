@@ -31,7 +31,7 @@ Be exact about this before you read any number in the Report.
 | Hash-chained run events, `verify_chain`, `verify_receipt` (chains the stored benchmark runs) | Built and unit-tested. The Report shows the chain over the stored benchmark runs; it does not yet cover source, fixes, order or webhook |
 | PayPal orders, authorize/capture, verified webhooks, read-only witness | **Not connected** (needs sandbox credentials) |
 
-The AFTER benchmark runs use `BenchmarkGuard` (`backend/app/services/benchmark/guard.py`), a stand-in that applies the published order rules. The real policy engine (`app/services/policy`) implements the same rules as a pure function and is unit-tested; swapping it into the guard is the integration step. It never talks to PayPal and never creates a PayPal order; every order it returns has `paypal_order_id: null`. It is replaced by the real policy and key functions when those are connected, and the Report says so.
+The AFTER benchmark runs use `BenchmarkGuard` (`backend/app/services/benchmark/guard.py`). Its key check is the real `KeyStore` (hashed key, revoke, expiry, rate limit, daily spend) and its decision is the real `evaluate_policy`. It never talks to PayPal and never creates a PayPal order; every order it returns has `paypal_order_id: null` (PayPal is **Not connected**).
 
 **No language model is used anywhere in the benchmark.** Both buyer agents are deterministic scripts, and every run is labelled `no LLM`. No real LLM run is claimed. The one-line honest reading of the results: the *store* changes what an agent can do safely, measured with a fixed script.
 
