@@ -49,7 +49,7 @@ class PayPalSettings:
     webhook_id: str = ""
 
     @classmethod
-    def from_env(cls) -> "PayPalSettings":
+    def from_env(cls) -> PayPalSettings:
         client_id = os.getenv("PAYPAL_CLIENT_ID", "").strip()
         client_secret = os.getenv("PAYPAL_CLIENT_SECRET", "").strip()
         if not client_id or not client_secret:
