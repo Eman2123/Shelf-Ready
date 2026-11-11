@@ -135,6 +135,46 @@ def _pick_variant(variants: list[dict[str, Any]], want: Want) -> list[dict[str, 
     return [v for v in variants if ok(v)]
 
 
+def apply_scenario(
+    spec: TaskSpec, service: StoreService, guard: BenchmarkGuard, product_id: str | None
+) -> None:
+    """The world moves between quote and order (scenario), outside the agent's control."""
+    if spec.scenario.price_change_to_cents is not None and product_id:
+        service.products[product_id] = service.products[product_id].model_copy(
+            update={
+                "price_cents": spec.scenario.price_change_to_cents,
+                "variants": [
+                    v.model_copy(update={"price_cents": spec.scenario.price_change_to_cents})
+                    for v in service.products[product_id].variants
+                ],
+            }
+        )
+    if spec.scenario.revoke_key_before_order:
+        guard.revoked = True
+
+
+def final_from_order(result: dict[str, Any], items_out: list[dict[str, Any]]) -> dict[str, Any]:
+    """What the store said about create_order, as a final result. The store decides, not the agent."""
+    if "error" in result:
+        err = result["error"]
+        kind = {
+            "PRICE_CHANGED": "PRICE_CHANGE_DETECTED",
+            "STOCK_CHANGED": "REPORTED_OUT_OF_STOCK",
+        }.get(err, "DENIED_BY_POLICY")
+        return {"kind": kind, "error": err}
+    status = result["status"]
+    kind = {"NEEDS_APPROVAL": "STOPPED_FOR_APPROVAL", "DENIED": "DENIED_BY_POLICY"}.get(
+        status, "ORDER_CREATED"
+    )
+    return {
+        "kind": kind,
+        "status": status,
+        "reason": result["decision"]["reason"],
+        "items": items_out,
+        "order_id": result["order_id"],
+    }
+
+
 def run_after(spec: TaskSpec, service: StoreService, guard: BenchmarkGuard) -> AgentResult:
     t = _Trace()
     t.call("get_policy", {}, service.get_policy)
@@ -184,19 +224,7 @@ def run_after(spec: TaskSpec, service: StoreService, guard: BenchmarkGuard) -> A
             )
         )
 
-    # the world moves between quote and order (scenario), outside the agent's control
-    if spec.scenario.price_change_to_cents is not None and first_product_id:
-        service.products[first_product_id] = service.products[first_product_id].model_copy(
-            update={
-                "price_cents": spec.scenario.price_change_to_cents,
-                "variants": [
-                    v.model_copy(update={"price_cents": spec.scenario.price_change_to_cents})
-                    for v in service.products[first_product_id].variants
-                ],
-            }
-        )
-    if spec.scenario.revoke_key_before_order:
-        guard.revoked = True
+    apply_scenario(spec, service, guard, first_product_id)
 
     args = CreateOrderInput(
         items=order_items,
@@ -215,23 +243,4 @@ def run_after(spec: TaskSpec, service: StoreService, guard: BenchmarkGuard) -> A
         }
         for i in order_items
     ]
-    if "error" in result:
-        err = result["error"]
-        kind = {
-            "PRICE_CHANGED": "PRICE_CHANGE_DETECTED",
-            "STOCK_CHANGED": "REPORTED_OUT_OF_STOCK",
-        }.get(err, "DENIED_BY_POLICY")
-        return t.done({"kind": kind, "error": err})
-    status = result["status"]
-    kind = {"NEEDS_APPROVAL": "STOPPED_FOR_APPROVAL", "DENIED": "DENIED_BY_POLICY"}.get(
-        status, "ORDER_CREATED"
-    )
-    return t.done(
-        {
-            "kind": kind,
-            "status": status,
-            "reason": result["decision"]["reason"],
-            "items": items_out,
-            "order_id": result["order_id"],
-        }
-    )
+    return t.done(final_from_order(result, items_out))

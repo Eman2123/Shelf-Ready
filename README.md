@@ -33,7 +33,7 @@ Be exact about this before you read any number in the Report.
 
 The AFTER benchmark runs use `BenchmarkGuard` (`backend/app/services/benchmark/guard.py`). Its key check is the real `KeyStore` (hashed key, revoke, expiry, rate limit, daily spend) and its decision is the real `evaluate_policy`. It never talks to PayPal and never creates a PayPal order; every order it returns has `paypal_order_id: null` (PayPal is **Not connected**).
 
-**No language model is used anywhere in the benchmark.** Both buyer agents are deterministic scripts, and every run is labelled `no LLM`. No real LLM run is claimed. The one-line honest reading of the results: the *store* changes what an agent can do safely, measured with a fixed script.
+**No language model is used anywhere in the benchmark.** Both buyer agents are deterministic scripts, and every run is labelled `no LLM`. No real LLM run is claimed (the LLM code below is built but unrun; it needs a key). The one-line honest reading of the results: the *store* changes what an agent can do safely, measured with a fixed script.
 
 ## Getting started (under 10 steps)
 
@@ -138,6 +138,24 @@ Two choices that are not in the PRD and should be confirmed: a store with no age
 ## API notes
 
 `GET /api/audit/demo-store` and `POST /api/fixes/validate` are public, read-only and rate limited per IP (60 per minute). Key management needs the `X-Admin-Token` header and `ADMIN_TOKEN` set on the server. Responses carry security headers and CORS is limited to `APP_URL`. Behind nginx, start uvicorn with `--proxy-headers` so the rate limit sees the real client IP.
+
+## Real LLM (code is built, needs your API key)
+
+The code for a real model exists but **has never been run against a real model**: no key was available when it was written, so every test uses a mocked transport. No real LLM result is claimed anywhere, and none appears in the Report.
+
+- `app/services/ai`: OpenAI-compatible client (AIML API or Gemini), plus `propose_with_llm`, which asks a model for a value and the exact source snippet per field and hands each answer to the fix validator. The validator decides; a value the model cannot quote becomes "needs the seller".
+- `app/services/agent/llm_agent.py`: a model-driven buyer that uses the same four store tools plus `finish`. It cannot claim an order: the final result of any order comes from what the store returned, and quote binding, keys and the policy engine still decide.
+- `app/scripts/record_llm_runs.py`: records real runs to `backend/data/benchmark/llm_runs.json` with the model id on every run. It never touches `runs.json`, so the scripted "no LLM" fingerprint is unchanged.
+
+To connect it, put these in `backend/.env` (git-ignored, server side only, never in the frontend or the chat):
+
+```
+AI_PROVIDER=aiml            # or gemini
+AIML_API_KEY=...
+AIML_MODEL=...              # exact model id from your provider
+```
+
+Then `make llm-check` (config only, no call), and `make llm-record ARGS="--tasks A2,B4 --k 1"`. Without a key it prints "LLM not connected" and exits without a run. Results from a model are not deterministic, so report them with the model id and k, never as a replacement for the scripted record.
 
 ## Report screen and the run-id rule
 
