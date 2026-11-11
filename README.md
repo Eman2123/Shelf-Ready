@@ -27,9 +27,11 @@ Be exact about this before you read any number in the Report.
 | Defect variants (n=5), Report screen, Fix review, Agent test | Runs |
 | Audit engine and readiness score (9 dimensions, critical cap, waterfall, `run_id` on every check), read-only `GET /api/audit/demo-store` | Built and unit-tested. The Report shows a recorded audit of two catalogs (`make audit-record`, `make verify-audit`) |
 | Fix engine, provenance validator, versions and rollback | Built and unit-tested, with a stateless `POST /api/fixes/validate`. Fix review still shows fixtures; nothing applies fixes to a live catalog yet |
-| Policy engine (`evaluate_policy`), agent keys (hashed, revoke, expiry, rate limit, spend) | Built and unit-tested. The benchmark guard uses `evaluate_policy` and reproduces the recorded 72 runs. Keys are wired into the running server: every `create_order` call is key-checked, admin routes `/api/keys` create, list and revoke (off unless `ADMIN_TOKEN` is set). Keys live in memory and reset on restart |
+| Policy engine (`evaluate_policy`), agent keys (hashed, revoke, expiry, rate limit, spend) | Built and unit-tested. The benchmark guard uses `evaluate_policy` and reproduces the recorded 72 runs. Keys are wired into the running server: every `create_order` call is key-checked, admin routes `/api/keys` create, list and revoke (off unless `ADMIN_TOKEN` is set). Keys are persisted when `DATABASE_URL` is set |
 | Hash-chained run events, `verify_chain`, `verify_receipt` (chains the stored benchmark runs) | Built and unit-tested. The Report shows the chain over the stored benchmark runs; it does not yet cover source, fixes, order or webhook |
-| PayPal orders, authorize/capture, verified webhooks, read-only witness | **Not connected** (needs sandbox credentials) |
+| PayPal Orders v2 (create with intent AUTHORIZE, authorize, capture, void, refund), read-only witness before capture, verified webhooks (PayPal verification API, deduped by event id, safe for duplicate and out-of-order delivery), seller approval queue, PayPal Catalog read | Built and tested against a **mocked** PayPal sandbox (`tests/test_orders_flow.py`, `tests/test_webhook_verify.py`). **Never run against the real sandbox yet**: that needs your sandbox credentials and a webhook id |
+| Persistence (SQLAlchemy 2 + Alembic) | Agent keys, daily spend, orders, approvals, webhook events and the order event log are stored. Set `DATABASE_URL` (Postgres) and run `alembic upgrade head`; unset means in-memory SQLite. The migration is tested on SQLite only. Audit runs and fix versions are still in memory |
+| Dashboard screens wired to the backend | Connect, Agent keys, Orders (pipeline, approvals, refund, webhook log), checkout return and cancel. Enter `ADMIN_TOKEN` in the page; there is no login. Audit grid and Fix review still show recorded data |
 
 The AFTER benchmark runs use `BenchmarkGuard` (`backend/app/services/benchmark/guard.py`). Its key check is the real `KeyStore` (hashed key, revoke, expiry, rate limit, daily spend) and its decision is the real `evaluate_policy`. It never talks to PayPal and never creates a PayPal order; every order it returns has `paypal_order_id: null` (PayPal is **Not connected**).
 
@@ -191,3 +193,14 @@ Tests: `pytest` in `backend/`; `npm test`, `npm run lint`, `npm run typecheck` a
 ## License
 
 MIT. See `LICENSE`.
+
+## Deploy
+
+Backend (Render, from `render.yaml`) and frontend (Vercel) are separate.
+
+1. **Database:** create a free Postgres (Neon, Supabase or Render Postgres) and copy its connection string.
+2. **Backend:** Render, New, Blueprint, pick this repo. Fill the prompted variables: `DATABASE_URL`, `APP_URL` (your Vercel URL), `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `PAYPAL_WEBHOOK_ID`. `ADMIN_TOKEN` is generated for you. The container runs `alembic upgrade head` on start, then serves on `$PORT`.
+3. **Webhook:** in the PayPal sandbox app, add a webhook to `https://<backend>/api/webhooks/paypal` for `CHECKOUT.ORDER.APPROVED`, `PAYMENT.CAPTURE.COMPLETED`, `PAYMENT.AUTHORIZATION.VOIDED`, `PAYMENT.CAPTURE.REFUNDED`. Put its id in `PAYPAL_WEBHOOK_ID`.
+4. **Frontend:** Vercel, Add New Project, import this repo, set **Root Directory** to `frontend`, and set `NEXT_PUBLIC_API_BASE_URL` to the backend URL.
+5. **Keep alive:** set the repository variables `FRONTEND_URL` and `BACKEND_URL` so `.github/workflows/keepalive.yml` pings both every 12 hours.
+6. **Expire stale approvals:** `POST /api/approvals/expire` (admin token) voids approvals past their 24 h deadline. Call it from a scheduler if you want automatic timeouts.

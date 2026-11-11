@@ -2,13 +2,13 @@ import Link from "next/link";
 
 /** Dashboard home (route /app). Screens are added by their owners; see docs/TEAM.md. */
 const screens = [
-  { name: "Connect and import", owner: "P2", tier: 1, href: null },
+  { name: "Connect and import", owner: "P2", tier: 1, href: "/app/connect" },
   { name: "Audit grid", owner: "P2", tier: 1, href: null },
   { name: "Fix review", owner: "P3 (data from P2)", tier: 1, href: "/app/fix-review" },
   { name: "Policy", owner: "P1", tier: 1, href: null },
-  { name: "Agent keys", owner: "P1", tier: 1, href: null },
+  { name: "Agent keys", owner: "P1", tier: 1, href: "/app/keys" },
   { name: "Agent test", owner: "P3", tier: 1, href: "/app/agent-test" },
-  { name: "Orders and approvals", owner: "P1", tier: 1, href: null },
+  { name: "Orders and approvals", owner: "P1", tier: 1, href: "/app/orders" },
   { name: "Report", owner: "P3", tier: 1, href: "/app/report" },
 ] as const;
 

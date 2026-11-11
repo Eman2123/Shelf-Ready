@@ -6,12 +6,13 @@ import type { ReactNode } from "react";
 
 /** Dashboard steps in seller order. Screens without an href are not built yet. */
 const NAV = [
-  { n: "01", label: "Connect", href: null },
+  { n: "01", label: "Connect", href: "/app/connect" },
   { n: "02", label: "Audit", href: null },
   { n: "03", label: "Fix review", href: "/app/fix-review" },
   { n: "04", label: "Agent test", href: "/app/agent-test" },
-  { n: "05", label: "Orders", href: null },
-  { n: "06", label: "Report", href: "/app/report" },
+  { n: "05", label: "Keys", href: "/app/keys" },
+  { n: "06", label: "Orders", href: "/app/orders" },
+  { n: "07", label: "Report", href: "/app/report" },
 ] as const;
 
 export function AppShell({ children }: { children: ReactNode }) {
