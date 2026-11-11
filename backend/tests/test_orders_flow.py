@@ -332,3 +332,38 @@ def test_keys_survive_a_restart(env):
     assert [r.key_id for r in reborn.list_keys()] == [env.key_id]
     fresh = reborn.create_key("a2", "store_demo", [KeyScope.READ], env.keys.get(env.key_id).limits)
     assert fresh.record.key_id != env.key_id  # counter continues, ids never reused
+
+
+async def _e2e(env, scenario, **kw):
+    import io
+
+    from app.scripts.sandbox_e2e import run
+
+    buf = io.StringIO()
+    result = await run(
+        scenario,
+        store=env.store,
+        keys=env.keys,
+        orders=env.orders,
+        repo=env.repo,
+        paypal=env.orders.paypal,
+        poll_seconds=0,
+        out=buf,
+        **kw,
+    )
+    return result, buf.getvalue()
+
+
+@pytest.mark.parametrize(
+    ("scenario", "expected"),
+    [("allow", "CAPTURED"), ("approval", "CAPTURED"), ("reject", "VOIDED"), ("deny", "DENIED")],
+)
+async def test_sandbox_script_scenarios(env, scenario, expected):
+    result, text = await _e2e(env, scenario)
+    assert result["order"].status == expected
+    assert "final status" in text or scenario == "deny"
+
+
+async def test_sandbox_script_refund(env):
+    result, _ = await _e2e(env, "allow", refund=True)
+    assert result["order"].status == "REFUNDED"

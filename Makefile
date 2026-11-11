@@ -1,4 +1,4 @@
-.PHONY: llm-check llm-record dev test lint migrate seed-demo bench-run bench-record verify-receipt verify-benchmark audit-record verify-audit
+.PHONY: sandbox llm-check llm-record dev test lint migrate seed-demo bench-run bench-record verify-receipt verify-benchmark audit-record verify-audit
 dev:
 	cd backend && uvicorn app.main:app --reload
 test:
@@ -25,3 +25,5 @@ audit-record:
 	cd backend && python -m app.scripts.record_audit
 verify-audit:
 	cd backend && python -m app.scripts.record_audit --check
+sandbox:
+	cd backend && python -m app.scripts.sandbox_e2e $(SCENARIO)

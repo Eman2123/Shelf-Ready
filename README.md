@@ -194,6 +194,10 @@ Tests: `pytest` in `backend/`; `npm test`, `npm run lint`, `npm run typecheck` a
 
 MIT. See `LICENSE`.
 
+## Run the flow on the PayPal sandbox
+
+See [docs/SANDBOX.md](docs/SANDBOX.md): get sandbox credentials, then `make sandbox SCENARIO=allow` (also `approval`, `reject`, `deny`).
+
 ## Deploy
 
 Backend (Render, from `render.yaml`) and frontend (Vercel) are separate.
