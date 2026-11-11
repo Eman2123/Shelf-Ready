@@ -18,6 +18,7 @@ from collections import defaultdict, deque
 from collections.abc import Callable
 from dataclasses import dataclass, replace
 from datetime import UTC, date, datetime, timedelta
+from typing import Protocol
 
 from app.contracts import (
     KeyFailureReason,
@@ -57,14 +58,38 @@ class IssuedKey:
     record: KeyRecord
 
 
+class KeyRepository(Protocol):
+    """Where keys survive a restart. The in-memory dicts stay the working copy."""
+
+    def load_keys(self) -> list[KeyRecord]: ...
+
+    def save_key(self, record: KeyRecord) -> None: ...
+
+    def load_spend(self) -> dict[tuple[str, date], int]: ...
+
+    def save_spend(self, key_id: str, day: date, cents: int) -> None: ...
+
+
 class KeyStore:
-    def __init__(self, clock: Callable[[], datetime] = lambda: datetime.now(UTC)) -> None:
+    def __init__(
+        self,
+        clock: Callable[[], datetime] = lambda: datetime.now(UTC),
+        repository: KeyRepository | None = None,
+    ) -> None:
         self.clock = clock
+        self.repository = repository
         self._by_hash: dict[str, KeyRecord] = {}
         self._by_id: dict[str, KeyRecord] = {}
         self._requests: dict[str, deque[datetime]] = defaultdict(deque)
         self._spent: dict[tuple[str, date], int] = defaultdict(int)
         self._counter = 0
+        if repository is not None:
+            for record in repository.load_keys():
+                self._by_hash[record.key_hash] = record
+                self._by_id[record.key_id] = record
+                self._counter = max(self._counter, int(record.key_id.split("_")[-1]))
+            for k, cents in repository.load_spend().items():
+                self._spent[k] = cents
 
     # --- lifecycle --------------------------------------------------------------------
     def create_key(
@@ -89,6 +114,8 @@ class KeyStore:
         )
         self._by_hash[record.key_hash] = record
         self._by_id[record.key_id] = record
+        if self.repository is not None:
+            self.repository.save_key(record)
         return IssuedKey(raw_key=raw, record=record)
 
     def revoke(self, key_id: str) -> KeyRecord:
@@ -99,6 +126,8 @@ class KeyStore:
         revoked = replace(record, revoked_at=record.revoked_at or self.clock())
         self._by_hash[record.key_hash] = revoked
         self._by_id[key_id] = revoked
+        if self.repository is not None:
+            self.repository.save_key(revoked)
         return revoked
 
     def get(self, key_id: str) -> KeyRecord | None:
@@ -109,8 +138,9 @@ class KeyStore:
         return list(self._by_id.values())
 
     # --- verification -----------------------------------------------------------------
-    def verify(self, raw_key: str) -> KeyVerification:
-        """Identity check on every order call. Matches StoreService's verify_key signature."""
+    def identify(self, raw_key: str) -> KeyVerification:
+        """Who is this key, right now? Same revoke and expiry checks as verify(), but it does
+        NOT count against the rate limit. The guarded order flow calls it after verify()."""
         if not raw_key.strip():
             return KeyRejected(reason=KeyFailureReason.KEY_UNKNOWN)
         record = self._by_hash.get(hash_key(raw_key))
@@ -121,12 +151,10 @@ class KeyStore:
             return KeyRejected(reason=KeyFailureReason.KEY_REVOKED)
         if record.limits.expires_at is not None and now >= record.limits.expires_at:
             return KeyRejected(reason=KeyFailureReason.KEY_EXPIRED)
-        window = self._requests[record.key_id]
-        while window and now - window[0] >= RATE_WINDOW:
-            window.popleft()
-        if len(window) >= record.limits.requests_per_minute:
-            return KeyRejected(reason=KeyFailureReason.RATE_LIMITED)
-        window.append(now)
+        return self._verified(record)
+
+    @staticmethod
+    def _verified(record: KeyRecord) -> KeyVerified:
         return KeyVerified(
             agent=VerifiedAgent(
                 agent_id=record.agent_id,
@@ -137,6 +165,21 @@ class KeyStore:
             )
         )
 
+    def verify(self, raw_key: str) -> KeyVerification:
+        """Identity check on every order call. Matches StoreService's verify_key signature."""
+        identified = self.identify(raw_key)
+        if not identified.ok:
+            return identified
+        record = self._by_id[identified.agent.key_id]
+        now = self.clock()
+        window = self._requests[record.key_id]
+        while window and now - window[0] >= RATE_WINDOW:
+            window.popleft()
+        if len(window) >= record.limits.requests_per_minute:
+            return KeyRejected(reason=KeyFailureReason.RATE_LIMITED)
+        window.append(now)
+        return identified
+
     # --- spend ------------------------------------------------------------------------
     def spent_today(self, key_id: str) -> int:
         return self._spent[(key_id, self.clock().date())]
@@ -146,4 +189,6 @@ class KeyStore:
             raise ValueError("spend cannot be negative")
         key = (key_id, self.clock().date())
         self._spent[key] += cents
+        if self.repository is not None:
+            self.repository.save_spend(key_id, key[1], self._spent[key])
         return self._spent[key]

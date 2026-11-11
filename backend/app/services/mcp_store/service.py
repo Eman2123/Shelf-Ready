@@ -8,7 +8,7 @@ The money step itself (policy + PayPal) is A's create_guarded_order, injected as
 from __future__ import annotations
 
 import uuid
-from collections.abc import Callable, Mapping
+from collections.abc import Awaitable, Callable, Mapping
 from datetime import UTC, datetime, timedelta
 from typing import Any
 
@@ -28,9 +28,13 @@ from app.contracts import (
     compute_quote_hash,
 )
 
+from .errors import OrderBackendUnavailable, OrderRejected
+
 QUOTE_TTL = timedelta(minutes=10)
 
 GuardedOrderFn = Callable[[GuardedOrderRequest], GuardedOrderResult]
+# The real PayPal-backed flow is async (it awaits PayPal), so the MCP tool uses this one.
+AsyncGuardedOrderFn = Callable[[GuardedOrderRequest], Awaitable[GuardedOrderResult]]
 # A's verify_key(key) plugs in here. None = demo mode, no key check (read-only demo role).
 KeyVerifierFn = Callable[[str], KeyVerification]
 
@@ -60,10 +64,12 @@ class StoreService:
         clock: Callable[[], datetime] = lambda: datetime.now(UTC),
         verify_key: KeyVerifierFn | None = None,
         quote_id_factory: Callable[[], str] | None = None,
+        async_guarded_order: AsyncGuardedOrderFn | None = None,
     ) -> None:
         self.products = products
         self.rules = rules
         self.guarded_order = guarded_order
+        self.async_guarded_order = async_guarded_order
         self.clock = clock
         self.verify_key = verify_key
         # tests and the benchmark inject a counter so recorded runs are reproducible
@@ -154,7 +160,8 @@ class StoreService:
             return {"error": "KEY_SCOPE_MISSING"}
         return None
 
-    def create_order(self, args: CreateOrderInput, agent_key: str) -> dict[str, Any]:
+    def _precheck(self, args: CreateOrderInput, agent_key: str) -> dict[str, Any] | None:
+        """Key and quote checks shared by the sync and async order paths."""
         if not agent_key.strip():
             return {"error": "KEY_UNKNOWN"}  # no key sent: refuse cleanly, never crash
         key_error = self._key_error(agent_key)
@@ -168,6 +175,32 @@ class StoreService:
                     "product_id": item.product_id,
                     "quote_id": item.quote_id,
                 }
+        return None
+
+    async def acreate_order(self, args: CreateOrderInput, agent_key: str) -> dict[str, Any]:
+        """Async twin of create_order, used by the MCP tool and the PayPal-backed flow."""
+        refused = self._precheck(args, agent_key)
+        if refused is not None:
+            return refused
+        if self.async_guarded_order is None:
+            return self.create_order(args, agent_key)
+        request = GuardedOrderRequest(
+            agent_key=agent_key,
+            items=args.items,
+            ship_to_country=args.ship_to_country,
+            idempotency_key=args.idempotency_key,
+        )
+        try:
+            return (await self.async_guarded_order(request)).model_dump(mode="json")
+        except OrderBackendUnavailable:
+            return {"error": "ORDER_BACKEND_NOT_CONNECTED"}
+        except OrderRejected as exc:
+            return {"error": exc.code}
+
+    def create_order(self, args: CreateOrderInput, agent_key: str) -> dict[str, Any]:
+        refused = self._precheck(args, agent_key)
+        if refused is not None:
+            return refused
         if self.guarded_order is None:
             return {"error": "ORDER_BACKEND_NOT_CONNECTED"}
         request = GuardedOrderRequest(

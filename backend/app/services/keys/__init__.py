@@ -1,3 +1,3 @@
-from .store import IssuedKey, KeyRecord, KeyStore, hash_key
+from .store import IssuedKey, KeyRecord, KeyRepository, KeyStore, hash_key
 
-__all__ = ["IssuedKey", "KeyRecord", "KeyStore", "hash_key"]
+__all__ = ["IssuedKey", "KeyRecord", "KeyRepository", "KeyStore", "hash_key"]

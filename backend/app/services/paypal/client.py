@@ -14,6 +14,7 @@ from typing import Any
 
 import httpx
 
+DEFAULT_BASE_URL = "https://api-m.sandbox.paypal.com"
 TOKEN_PATH = "/v1/oauth2/token"
 WRITE_METHODS = {"POST", "PATCH", "PUT", "DELETE"}
 # Refresh the token this many seconds before it really expires.
@@ -45,7 +46,7 @@ class PayPalConfigError(Exception):
 class PayPalSettings:
     client_id: str
     client_secret: str
-    base_url: str = "https://api-m.sandbox.paypal.com"
+    base_url: str = DEFAULT_BASE_URL
     webhook_id: str = ""
 
     @classmethod
@@ -56,7 +57,10 @@ class PayPalSettings:
             raise PayPalConfigError(
                 "PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET must be set in the environment."
             )
-        base_url = os.getenv("PAYPAL_BASE_URL", "https://api-m.sandbox.paypal.com").strip()
+        # .env.example documents PAYPAL_API_BASE; PAYPAL_BASE_URL is accepted too.
+        base_url = (
+            os.getenv("PAYPAL_API_BASE") or os.getenv("PAYPAL_BASE_URL") or DEFAULT_BASE_URL
+        ).strip()
         return cls(
             client_id=client_id,
             client_secret=client_secret,
@@ -111,9 +115,7 @@ class PayPalClient:
             payload = response.json()
             self._token = payload["access_token"]
             expires_in = int(payload.get("expires_in", 300))
-            self._token_expires_at = (
-                time.monotonic() + max(expires_in - EXPIRY_MARGIN_SECONDS, 0)
-            )
+            self._token_expires_at = time.monotonic() + max(expires_in - EXPIRY_MARGIN_SECONDS, 0)
             return self._token
 
     # ---- requests ---------------------------------------------------------

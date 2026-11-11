@@ -7,13 +7,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
-from app.api import agent_ready, audit, fixes, keys
-from app.core.runtime import store_service
+from app.api import agent_ready, audit, fixes, keys, orders, paypal
+from app.core.runtime import paypal_client, store_service
 from app.core.security import SecurityHeadersMiddleware, limiter
 from app.services.mcp_store.server import build_server
 
-# Demo wiring: published demo catalog, every order call key-checked, no order backend yet
-# (the PayPal create_guarded_order plugs in here).
+# Wiring lives in app.core.runtime: published demo catalog, every order call key-checked, and
+# the PayPal-backed order flow when sandbox credentials are set.
 mcp_server = build_server(store_service)
 mcp_app = mcp_server.streamable_http_app()  # serves POST /mcp
 
@@ -38,11 +38,17 @@ app.include_router(agent_ready.router)
 app.include_router(audit.router)
 app.include_router(fixes.router)
 app.include_router(keys.router)
+app.include_router(orders.router)
+app.include_router(paypal.router)
 
 
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok", "environment": "paypal-sandbox"}
+    return {
+        "status": "ok",
+        "environment": "paypal-sandbox",
+        "paypal": "connected" if paypal_client else "not-connected",
+    }
 
 
 # Mounted last so the routes above win; the MCP app only answers /mcp.

@@ -1,0 +1,27 @@
+# Render Blueprint: deploys the FastAPI backend from backend/Dockerfile.
+# The frontend is deployed separately on Vercel (see README, "Deploy").
+# Secrets are marked sync: false, so Render asks for them in the dashboard; none live in git.
+services:
+  - type: web
+    name: shelf-ready-api
+    runtime: docker
+    dockerContext: ./backend
+    dockerfilePath: ./backend/Dockerfile
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: APP_URL
+        sync: false # your Vercel URL, e.g. https://shelf-ready.vercel.app (used for CORS)
+      - key: DATABASE_URL
+        sync: false # Postgres connection string (Neon / Supabase / Render Postgres)
+      - key: ADMIN_TOKEN
+        generateValue: true
+      - key: PAYPAL_API_BASE
+        value: https://api-m.sandbox.paypal.com
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: PAYPAL_WEBHOOK_ID
+        sync: false

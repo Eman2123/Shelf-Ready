@@ -39,13 +39,13 @@ def build_server(service: StoreService, name: str = "shelf-ready-store") -> MCPS
         return service.get_policy()
 
     @server.tool()
-    def create_order(
+    async def create_order(
         items: list[dict[str, Any]], ship_to_country: str, idempotency_key: str, agent_key: str = ""
     ) -> dict[str, Any]:
         """Create an order. Every item needs the quote_id returned by get_product."""
         args = CreateOrderInput.model_validate(
             {"items": items, "ship_to_country": ship_to_country, "idempotency_key": idempotency_key}
         )
-        return service.create_order(args, agent_key)
+        return await service.acreate_order(args, agent_key)
 
     return server
