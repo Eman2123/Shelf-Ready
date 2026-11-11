@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+/* Ledger x Swiss: cream paper, serif display, Swiss grid and heavy rules. One red, no radius. */
+@theme {
+  --color-ink: #1b1a17;
+  --color-paper: #f7f1e3;
+  --color-signal: #b3261e;
+  --color-ok: #1f5d3a;
+  --color-wait: #8a5a00;
+  --color-mute: #54514a;
+  --color-hilite: #f2d68a;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-signal);
+  outline-offset: 2px;
+}

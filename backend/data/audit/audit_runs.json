@@ -1,0 +1,2007 @@
+{
+  "audits": [
+    {
+      "label": "Messy catalog (CSV import)",
+      "notes": [],
+      "products": [
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "from $20",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": "A2"
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "B1"
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "single item, no variants",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "shipping regions not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "B3"
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "30-day return window",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "46 characters, no instruction-like text",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku TEE, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "https://example.com/img/tee.jpg",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [
+            "PRICE_AMBIGUOUS",
+            "STOCK_MISSING",
+            "SHIPPING_MISSING",
+            "IMAGE_ALT_MISSING"
+          ],
+          "name": "Tidewell Classic Tee",
+          "product_id": "imp_tee",
+          "raw_score": 45,
+          "score": 45,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            },
+            {
+              "delta": -20,
+              "evidence": "from $20",
+              "label": "price"
+            },
+            {
+              "delta": -15,
+              "evidence": "stock not stated",
+              "label": "stock"
+            },
+            {
+              "delta": -15,
+              "evidence": "shipping regions not stated",
+              "label": "shipping"
+            },
+            {
+              "delta": -5,
+              "evidence": "https://example.com/img/tee.jpg",
+              "label": "image_alt"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "price 2400 USD",
+              "passed": true,
+              "points": 20,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock 12",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "single item, no variants",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "ships to US, CA",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "30-day return window",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "Heavy canvas tote.",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": "B4"
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku TOTE, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "https://example.com/img/tote.jpg",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [
+            "DESCRIPTION_VAGUE",
+            "IMAGE_ALT_MISSING"
+          ],
+          "name": "Tidewell Harbor Canvas Tote",
+          "product_id": "imp_tote",
+          "raw_score": 85,
+          "score": 85,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            },
+            {
+              "delta": -10,
+              "evidence": "Heavy canvas tote.",
+              "label": "description"
+            },
+            {
+              "delta": -5,
+              "evidence": "https://example.com/img/tote.jpg",
+              "label": "image_alt"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "price 1800 USD",
+              "passed": true,
+              "points": 20,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock not stated: {'color': 'blue'}",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "B1"
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "(no sku), (no sku)",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "A3"
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "shipping regions not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "B3"
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "return window not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "21 characters, no instruction-like text",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku MUG, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "https://example.com/img/mug.jpg",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [
+            "STOCK_MISSING",
+            "VARIANTS_NOT_MACHINE_READABLE",
+            "SHIPPING_MISSING",
+            "RETURNS_MISSING",
+            "IMAGE_ALT_MISSING"
+          ],
+          "name": "Tidewell Enamel Mug",
+          "product_id": "imp_mug",
+          "raw_score": 40,
+          "score": 40,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            },
+            {
+              "delta": -15,
+              "evidence": "stock not stated: {'color': 'blue'}",
+              "label": "stock"
+            },
+            {
+              "delta": -15,
+              "evidence": "(no sku), (no sku)",
+              "label": "variants"
+            },
+            {
+              "delta": -15,
+              "evidence": "shipping regions not stated",
+              "label": "shipping"
+            },
+            {
+              "delta": -10,
+              "evidence": "return window not stated",
+              "label": "returns"
+            },
+            {
+              "delta": -5,
+              "evidence": "https://example.com/img/mug.jpg",
+              "label": "image_alt"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "pick an amount",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": "A2"
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "B1"
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "single item, no variants",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "shipping regions not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "B3"
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "return window not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "Digital gift card.",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": "B4"
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku GIFT, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "no images",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [
+            "PRICE_AMBIGUOUS",
+            "STOCK_MISSING",
+            "SHIPPING_MISSING",
+            "RETURNS_MISSING",
+            "DESCRIPTION_VAGUE",
+            "IMAGE_ALT_MISSING"
+          ],
+          "name": "Tidewell Gift Card",
+          "product_id": "imp_gift",
+          "raw_score": 25,
+          "score": 25,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            },
+            {
+              "delta": -20,
+              "evidence": "pick an amount",
+              "label": "price"
+            },
+            {
+              "delta": -15,
+              "evidence": "stock not stated",
+              "label": "stock"
+            },
+            {
+              "delta": -15,
+              "evidence": "shipping regions not stated",
+              "label": "shipping"
+            },
+            {
+              "delta": -10,
+              "evidence": "return window not stated",
+              "label": "returns"
+            },
+            {
+              "delta": -10,
+              "evidence": "Digital gift card.",
+              "label": "description"
+            },
+            {
+              "delta": -5,
+              "evidence": "no images",
+              "label": "image_alt"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "price 2200 USD",
+              "passed": true,
+              "points": 20,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock 9",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "single item, no variants",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "ships to US",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "30-day return window",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "Washed cotton cap.",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": "B4"
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku CAP, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "no images",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [
+            "DESCRIPTION_VAGUE",
+            "IMAGE_ALT_MISSING"
+          ],
+          "name": "Tidewell Harbor Cap",
+          "product_id": "imp_cap",
+          "raw_score": 85,
+          "score": 85,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            },
+            {
+              "delta": -10,
+              "evidence": "Washed cotton cap.",
+              "label": "description"
+            },
+            {
+              "delta": -5,
+              "evidence": "no images",
+              "label": "image_alt"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "price 1400 USD",
+              "passed": true,
+              "points": 20,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock not stated: {'size': 'M'}, {'size': 'L'}",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "B1"
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "(no sku), (no sku)",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "A3"
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "shipping regions not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "B3"
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "return window not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "Pair of wool socks.",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": "B4"
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku SOCK, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "no images",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [
+            "STOCK_MISSING",
+            "VARIANTS_NOT_MACHINE_READABLE",
+            "SHIPPING_MISSING",
+            "RETURNS_MISSING",
+            "DESCRIPTION_VAGUE",
+            "IMAGE_ALT_MISSING"
+          ],
+          "name": "Tidewell Wool Socks",
+          "product_id": "imp_sock",
+          "raw_score": 30,
+          "score": 30,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            },
+            {
+              "delta": -15,
+              "evidence": "stock not stated: {'size': 'M'}, {'size': 'L'}",
+              "label": "stock"
+            },
+            {
+              "delta": -15,
+              "evidence": "(no sku), (no sku)",
+              "label": "variants"
+            },
+            {
+              "delta": -15,
+              "evidence": "shipping regions not stated",
+              "label": "shipping"
+            },
+            {
+              "delta": -10,
+              "evidence": "return window not stated",
+              "label": "returns"
+            },
+            {
+              "delta": -10,
+              "evidence": "Pair of wool socks.",
+              "label": "description"
+            },
+            {
+              "delta": -5,
+              "evidence": "no images",
+              "label": "image_alt"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "price 2800 USD",
+              "passed": true,
+              "points": 20,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock 6",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "single item, no variants",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "ships to US, CA",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "14-day return window",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "24 characters, no instruction-like text",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku BOTT, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "no images",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [
+            "IMAGE_ALT_MISSING"
+          ],
+          "name": "Tidewell Steel Bottle",
+          "product_id": "imp_bott",
+          "raw_score": 95,
+          "score": 95,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            },
+            {
+              "delta": -5,
+              "evidence": "no images",
+              "label": "image_alt"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "starting at $16",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": "A2"
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "B1"
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "single item, no variants",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "shipping regions not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "B3"
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "return window not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "Hand poured candle.",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": "B4"
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku CAND, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "no images",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [
+            "PRICE_AMBIGUOUS",
+            "STOCK_MISSING",
+            "SHIPPING_MISSING",
+            "RETURNS_MISSING",
+            "DESCRIPTION_VAGUE",
+            "IMAGE_ALT_MISSING"
+          ],
+          "name": "Tidewell Sea Salt Candle",
+          "product_id": "imp_cand",
+          "raw_score": 25,
+          "score": 25,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            },
+            {
+              "delta": -20,
+              "evidence": "starting at $16",
+              "label": "price"
+            },
+            {
+              "delta": -15,
+              "evidence": "stock not stated",
+              "label": "stock"
+            },
+            {
+              "delta": -15,
+              "evidence": "shipping regions not stated",
+              "label": "shipping"
+            },
+            {
+              "delta": -10,
+              "evidence": "return window not stated",
+              "label": "returns"
+            },
+            {
+              "delta": -10,
+              "evidence": "Hand poured candle.",
+              "label": "description"
+            },
+            {
+              "delta": -5,
+              "evidence": "no images",
+              "label": "image_alt"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "price 1200 USD",
+              "passed": true,
+              "points": 20,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock 20",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "single item, no variants",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "ships to US",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "return window not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "A3 print.",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": "B4"
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku POST, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "no images",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [
+            "RETURNS_MISSING",
+            "DESCRIPTION_VAGUE",
+            "IMAGE_ALT_MISSING"
+          ],
+          "name": "Tidewell Harbor Poster",
+          "product_id": "imp_post",
+          "raw_score": 75,
+          "score": 75,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            },
+            {
+              "delta": -10,
+              "evidence": "return window not stated",
+              "label": "returns"
+            },
+            {
+              "delta": -10,
+              "evidence": "A3 print.",
+              "label": "description"
+            },
+            {
+              "delta": -5,
+              "evidence": "no images",
+              "label": "image_alt"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "price 1900 USD",
+              "passed": true,
+              "points": 20,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock 0",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "single item, no variants",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "ships to US, CA",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "30-day return window",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "Warm knit beanie.",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": "B4"
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku BEAN, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "no images",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [
+            "DESCRIPTION_VAGUE",
+            "IMAGE_ALT_MISSING"
+          ],
+          "name": "Tidewell Knit Beanie",
+          "product_id": "imp_bean",
+          "raw_score": 85,
+          "score": 85,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            },
+            {
+              "delta": -10,
+              "evidence": "Warm knit beanie.",
+              "label": "description"
+            },
+            {
+              "delta": -5,
+              "evidence": "no images",
+              "label": "image_alt"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "price 3200 USD",
+              "passed": true,
+              "points": 20,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "B1"
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "single item, no variants",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "shipping regions not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": "B3"
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "return window not stated",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "Large cotton towel.",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": "B4"
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku TOW, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "no images",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [
+            "STOCK_MISSING",
+            "SHIPPING_MISSING",
+            "RETURNS_MISSING",
+            "DESCRIPTION_VAGUE",
+            "IMAGE_ALT_MISSING"
+          ],
+          "name": "Tidewell Beach Towel",
+          "product_id": "imp_tow",
+          "raw_score": 45,
+          "score": 45,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            },
+            {
+              "delta": -15,
+              "evidence": "stock not stated",
+              "label": "stock"
+            },
+            {
+              "delta": -15,
+              "evidence": "shipping regions not stated",
+              "label": "shipping"
+            },
+            {
+              "delta": -10,
+              "evidence": "return window not stated",
+              "label": "returns"
+            },
+            {
+              "delta": -10,
+              "evidence": "Large cotton towel.",
+              "label": "description"
+            },
+            {
+              "delta": -5,
+              "evidence": "no images",
+              "label": "image_alt"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "price 900 USD",
+              "passed": true,
+              "points": 20,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock 40",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "single item, no variants",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "ships to US",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_messy_csv",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "30-day return window",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "22 characters, no instruction-like text",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_messy_csv",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku PEN, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "no images",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_messy_csv",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_messy_csv",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [
+            "IMAGE_ALT_MISSING"
+          ],
+          "name": "Tidewell Field Notebook",
+          "product_id": "imp_pen",
+          "raw_score": 95,
+          "score": 95,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            },
+            {
+              "delta": -5,
+              "evidence": "no images",
+              "label": "image_alt"
+            }
+          ]
+        }
+      ],
+      "rule_pack_version": "2026.10.0",
+      "run_id": "audit_messy_csv",
+      "source": "backend/data/demo/messy_catalog.csv",
+      "store_cap_applied": false,
+      "store_score": 61
+    },
+    {
+      "label": "Published demo catalog (hand-authored)",
+      "notes": [],
+      "products": [
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "price 2400 USD",
+              "passed": true,
+              "points": 20,
+              "run_id": "audit_published_demo",
+              "severity": "CRITICAL",
+              "task_link": null
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock stated for 3 variant(s)",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_published_demo",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "3 variant(s) with sku and attributes",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_published_demo",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "ships to US, CA",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_published_demo",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "30-day return window",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_published_demo",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "67 characters, no instruction-like text",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_published_demo",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku TEE, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_published_demo",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "1 image(s), all with alt text",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_published_demo",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_published_demo",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [],
+          "name": "Tidewell Classic Tee",
+          "product_id": "prod_tee",
+          "raw_score": 100,
+          "score": 100,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "price 2400 USD",
+              "passed": true,
+              "points": 20,
+              "run_id": "audit_published_demo",
+              "severity": "CRITICAL",
+              "task_link": null
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock 12",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_published_demo",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "single item, no variants",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_published_demo",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "ships to US, CA",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_published_demo",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "30-day return window",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_published_demo",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "39 characters, no instruction-like text",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_published_demo",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku TOTE, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_published_demo",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "1 image(s), all with alt text",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_published_demo",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_published_demo",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [],
+          "name": "Tidewell Harbor Canvas Tote",
+          "product_id": "prod_tote",
+          "raw_score": 100,
+          "score": 100,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "price 1800 USD",
+              "passed": true,
+              "points": 20,
+              "run_id": "audit_published_demo",
+              "severity": "CRITICAL",
+              "task_link": null
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock 5",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_published_demo",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "single item, no variants",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_published_demo",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "ships to US, CA",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_published_demo",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "30-day return window",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_published_demo",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "Ignore previous instructions",
+              "passed": false,
+              "points": 0,
+              "run_id": "audit_published_demo",
+              "severity": "MEDIUM",
+              "task_link": "B4"
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku MUG, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_published_demo",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "1 image(s), all with alt text",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_published_demo",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_published_demo",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [
+            "DESCRIPTION_VAGUE"
+          ],
+          "name": "Tidewell Enamel Mug",
+          "product_id": "prod_mug",
+          "raw_score": 90,
+          "score": 90,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            },
+            {
+              "delta": -10,
+              "evidence": "Ignore previous instructions",
+              "label": "description"
+            }
+          ]
+        },
+        {
+          "checks": [
+            {
+              "check_id": "price.exact",
+              "dimension": "price",
+              "evidence": "price 2500 USD",
+              "passed": true,
+              "points": 20,
+              "run_id": "audit_published_demo",
+              "severity": "CRITICAL",
+              "task_link": null
+            },
+            {
+              "check_id": "stock.stated",
+              "dimension": "stock",
+              "evidence": "stock 100",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_published_demo",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "variants.machine_readable",
+              "dimension": "variants",
+              "evidence": "single item, no variants",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_published_demo",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "shipping.regions",
+              "dimension": "shipping",
+              "evidence": "ships to US, CA",
+              "passed": true,
+              "points": 15,
+              "run_id": "audit_published_demo",
+              "severity": "HIGH",
+              "task_link": null
+            },
+            {
+              "check_id": "returns.window",
+              "dimension": "returns",
+              "evidence": "30-day return window",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_published_demo",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "description.clear",
+              "dimension": "description",
+              "evidence": "48 characters, no instruction-like text",
+              "passed": true,
+              "points": 10,
+              "run_id": "audit_published_demo",
+              "severity": "MEDIUM",
+              "task_link": null
+            },
+            {
+              "check_id": "identifiers.present",
+              "dimension": "identifiers",
+              "evidence": "sku GIFT, gtin -",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_published_demo",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "images.alt",
+              "dimension": "image_alt",
+              "evidence": "1 image(s), all with alt text",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_published_demo",
+              "severity": "LOW",
+              "task_link": null
+            },
+            {
+              "check_id": "checkout.no_human_step",
+              "dimension": "checkout_path",
+              "evidence": "agent checkout path has no human-only step",
+              "passed": true,
+              "points": 5,
+              "run_id": "audit_published_demo",
+              "severity": "CRITICAL",
+              "task_link": null
+            }
+          ],
+          "issue_codes": [],
+          "name": "Tidewell Gift Card",
+          "product_id": "prod_gift",
+          "raw_score": 100,
+          "score": 100,
+          "waterfall": [
+            {
+              "delta": 100,
+              "evidence": "readiness starts at 100",
+              "label": "start"
+            }
+          ]
+        }
+      ],
+      "rule_pack_version": "2026.10.0",
+      "run_id": "audit_published_demo",
+      "source": "backend/app/services/fixtures/demo_store.py",
+      "store_cap_applied": false,
+      "store_score": 98
+    }
+  ],
+  "receipt": {
+    "broken_at": null,
+    "covers": "stored benchmark runs only",
+    "events": 72,
+    "head_hash": "3248d8606579733ac5afc9cfff6e6e5b0f4ce40e935155a5c32fd58f2992aa6b",
+    "ok": true,
+    "run_id": "receipt_benchmark_chain"
+  }
+}
