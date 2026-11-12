@@ -68,7 +68,12 @@ export function AppShell({ children }: { children: ReactNode }) {
               })}
             </ol>
           </nav>
-          <p className="font-mono text-xs font-bold uppercase">PayPal sandbox only</p>
+          <div className="flex items-center gap-4">
+            <Link href="/docs" className="text-sm font-semibold hover:underline">
+              Docs
+            </Link>
+            <p className="font-mono text-xs font-bold uppercase">PayPal sandbox only</p>
+          </div>
         </div>
       </header>
       <main id="main" tabIndex={-1} className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">

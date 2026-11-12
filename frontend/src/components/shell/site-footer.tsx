@@ -9,6 +9,7 @@ const PRODUCT: { label: string; href: string; icon: IconName }[] = [
   { label: "Agent test", href: "/app/agent-test", icon: "agent" },
   { label: "Orders", href: "/app/orders", icon: "orders" },
   { label: "Report", href: "/app/report", icon: "report" },
+  { label: "Documentation", href: "/docs", icon: "fix" },
 ];
 
 /** Shared by the landing page and the dashboard. */

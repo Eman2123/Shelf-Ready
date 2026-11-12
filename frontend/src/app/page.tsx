@@ -113,6 +113,9 @@ export default function Home() {
             <a href="#judges" className="hover:underline">
               For judges
             </a>
+            <Link href="/docs" className="hover:underline">
+              Docs
+            </Link>
             <Link
               href="/app"
               className="bg-ink px-4 py-2 font-extrabold uppercase tracking-wide text-paper hover:bg-signal"
