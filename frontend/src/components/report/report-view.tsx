@@ -1,4 +1,5 @@
 import { Figure } from "@/components/report/figure";
+import { LlmRuns } from "@/components/report/llm-section";
 import { StatusTag } from "@/components/ui";
 import { recorded } from "@/lib/recorded";
 import {
@@ -50,8 +51,9 @@ export function ReportView() {
         Readiness Receipt · Tidewell Goods (fictional) · PayPal sandbox only
       </p>
       <p className="mt-3 max-w-2xl text-sm">
-        Every number below opens the runs it came from and their raw record. Agents here are the
-        scripted baselines named in each run, not a language model.
+        Every number below opens the runs it came from and their raw record. Agents in the tables
+        are the scripted baselines named in each run. The one section with a real language model is
+        called Real language-model runs.
       </p>
 
       <Section n="01" title="Readiness score of two catalogs">
@@ -197,6 +199,10 @@ export function ReportView() {
             </tbody>
           </table>
         </div>
+      </Section>
+
+      <Section n="02b" title="Real language-model runs">
+        <LlmRuns />
       </Section>
 
       <Section n="03" title="Defect variants">
