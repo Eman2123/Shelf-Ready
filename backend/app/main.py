@@ -8,6 +8,7 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 from app.api import agent_ready, audit, fixes, keys, orders, paypal
+from app.core import env as _env  # noqa: F401
 from app.core.runtime import paypal_client, store_service
 from app.core.security import SecurityHeadersMiddleware, limiter
 from app.services.mcp_store.server import build_server

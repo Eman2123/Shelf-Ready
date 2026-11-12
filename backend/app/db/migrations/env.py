@@ -7,6 +7,7 @@ import os
 from alembic import context
 from sqlalchemy import create_engine
 
+from app.core import env as _env  # noqa: F401  (loads DATABASE_URL from backend/.env)
 from app.db.models import Base
 from app.db.session import normalize_url
 

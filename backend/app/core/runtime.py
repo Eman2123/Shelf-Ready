@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import os
 
+from app.core import env as _env  # noqa: F401  (loads backend/.env before anything reads it)
 from app.db import Base, make_engine, make_session_factory
 from app.db.repositories import OrderRepository, SqlKeyRepository
 from app.services.fixtures.demo_store import DEFAULT_POLICY, PUBLISHED_PRODUCTS

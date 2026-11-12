@@ -114,3 +114,24 @@ def test_migrations_create_exactly_the_model_tables(tmp_path, monkeypatch):
     tables = set(inspect(create_engine(url)).get_table_names())
     assert set(Base.metadata.tables) <= tables
     command.downgrade(cfg, "base")
+
+
+def test_env_file_parser_and_no_override(tmp_path, monkeypatch):
+    from app.core.env import load_env, parse_env
+
+    assert parse_env('A=1\n# c\nexport B="two words"\nC=x # note\nD=\n') == {
+        "A": "1",
+        "B": "two words",
+        "C": "x",
+        "D": "",
+    }
+    f = tmp_path / ".env"
+    f.write_text("SR_TEST_A=from-file\nSR_TEST_B=from-file\n", encoding="utf-8")
+    monkeypatch.setenv("SR_TEST_B", "already-set")
+    monkeypatch.delenv("SR_TEST_A", raising=False)
+    assert load_env([f]) == ["SR_TEST_A"]
+    import os
+
+    assert os.environ["SR_TEST_A"] == "from-file"
+    assert os.environ["SR_TEST_B"] == "already-set"  # real environment wins
+    monkeypatch.delenv("SR_TEST_A")

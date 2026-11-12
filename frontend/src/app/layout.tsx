@@ -8,9 +8,10 @@ export const metadata: Metadata = {
     "Make your store buyable by AI shopping agents, with rule-guarded PayPal checkout. Sandbox only.",
 };
 
+// suppressHydrationWarning on <html>: browser extensions add attributes to it before React loads.
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Fraunces (display) + Inter (body); stacks fall back to Georgia / system-ui if blocked. */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
