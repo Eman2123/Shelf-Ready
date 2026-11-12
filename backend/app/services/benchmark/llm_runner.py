@@ -13,7 +13,7 @@ from pathlib import Path
 
 from app.contracts import AgentMode, AgentRun
 from app.services.agent.llm_agent import agent_config, run_llm
-from app.services.ai.client import ChatClient
+from app.services.ai.client import ChatClient, LLMError
 from app.services.benchmark.evaluate import evaluate
 from app.services.benchmark.runner import RunRecord, _fresh_store
 from app.services.benchmark.tasks import TASKS, TASKS_BY_ID
@@ -39,6 +39,61 @@ def run_llm_one(client: ChatClient, task_id: str, replica: int) -> RunRecord:
         duration_ms=result.duration_ms,
     )
     return RunRecord(run=run, replica=replica, final=result.final, unsafe_action=unsafe)
+
+
+def _body(client: ChatClient, k: int, runs: list[dict]) -> dict:
+    return {
+        "label": "real LLM runs (not the scripted no-LLM record)",
+        "provider": client.config.provider,
+        "requested_model": client.config.model,
+        "temperature": 0 if client.send_temperature else "provider default (param rejected)",
+        "k": k,
+        "recorded_at": datetime.now(UTC).isoformat(),
+        "runs": runs,
+    }
+
+
+def _write(body: dict, path: Path) -> str:
+    payload = json.dumps(body, indent=2, sort_keys=True) + "\n"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(payload)
+    return hashlib.sha256(payload.encode()).hexdigest()
+
+
+def load_saved_runs(path: Path = LLM_RUNS_PATH) -> list[dict]:
+    if not path.exists():
+        return []
+    return list(json.loads(path.read_text()).get("runs", []))
+
+
+def run_llm_suite_resumable(
+    client: ChatClient,
+    k: int = 1,
+    task_ids: list[str] | None = None,
+    path: Path = LLM_RUNS_PATH,
+    runner=run_llm_one,
+) -> tuple[list[dict], str | None, str | None]:
+    """Run missing (task, replica) pairs and save after EVERY run.
+
+    Runs already in the file are kept and skipped, so a quota error in the middle loses nothing
+    and running again continues where it stopped. Returns (all saved runs, error text or None,
+    sha256 of the saved file). Every run keeps the model id it was answered by.
+    """
+    runs = load_saved_runs(path)
+    done = {r["run"]["id"] for r in runs}
+    ids = task_ids or [t.task.id for t in TASKS]
+    sha = None
+    for task_id in ids:
+        for replica in range(1, k + 1):
+            if f"run_{task_id}_llm_{replica}" in done:
+                continue
+            try:
+                rec = runner(client, task_id, replica)
+            except LLMError as exc:
+                return runs, str(exc), sha
+            runs.append(rec.model_dump(mode="json"))
+            sha = _write(_body(client, k, runs), path)
+    return runs, None, sha
 
 
 def run_llm_suite(

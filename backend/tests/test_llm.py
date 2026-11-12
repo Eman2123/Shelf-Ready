@@ -318,3 +318,29 @@ def test_run_record_names_the_model_that_answered_not_the_alias():
     rec = run_llm_one(client(h), "A3", 1)
     assert rec.run.agent_config.startswith("anthropic/claude-fable-5.2 (real LLM")
     assert rec.run.outcome is AgentRunOutcome.SUCCESS
+
+
+def test_resumable_suite_keeps_saved_runs_and_continues(tmp_path):
+    from app.services.benchmark.llm_runner import run_llm_one, run_llm_suite_resumable
+
+    path = tmp_path / "llm_runs.json"
+    calls = {"n": 0}
+
+    def flaky(c, task_id, replica):
+        calls["n"] += 1
+        if calls["n"] == 3:
+            raise LLMError("provider returned HTTP 403: quota")
+        return run_llm_one(c, task_id, replica)
+
+    def handler(request):  # model answers "no tool calls": the run still ends and is recorded
+        return httpx.Response(
+            200,
+            json={"model": "m1", "choices": [{"message": {"role": "assistant", "content": "x"}}]},
+        )
+
+    c = client(handler)
+    runs, err, _ = run_llm_suite_resumable(c, 1, ["A2", "B4", "A1"], path, runner=flaky)
+    assert len(runs) == 2 and "403" in err  # two saved before the quota error
+    runs2, err2, _ = run_llm_suite_resumable(c, 1, ["A2", "B4", "A1"], path, runner=flaky)
+    assert err2 is None and len(runs2) == 3  # continued, did not redo A2 and B4
+    assert len({r["run"]["id"] for r in runs2}) == 3

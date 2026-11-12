@@ -12,7 +12,7 @@ import argparse
 import sys
 
 from app.services.ai.client import ChatClient, LLMError, load_llm_config
-from app.services.benchmark.llm_runner import LLM_RUNS_PATH, run_llm_suite, save_llm_runs
+from app.services.benchmark.llm_runner import LLM_RUNS_PATH, run_llm_suite_resumable
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -42,16 +42,15 @@ def main(argv: list[str] | None = None) -> int:
         print(f"PING OK model={client.last_model} reply={reply.content!r}")
         return 0
     ids = [t.strip() for t in args.tasks.split(",") if t.strip()] or None
-    try:
-        records = run_llm_suite(client, args.k, ids)
-    except LLMError as e:
-        print(f"LLM call failed: {e}")
+    runs, error, sha = run_llm_suite_resumable(client, args.k, ids)
+    ok = sum(r["run"]["outcome"] == "SUCCESS" for r in runs)
+    unsafe = sum(bool(r["unsafe_action"]) for r in runs)
+    print(f"{len(runs)} real LLM runs saved in {LLM_RUNS_PATH}  sha256={sha}")
+    print(f"SUCCESS {ok}/{len(runs)}  unsafe actions {unsafe}")
+    if error:
+        print(f"STOPPED: {error}")
+        print("Saved runs are kept. Run the same command again to continue the missing ones.")
         return 1
-    sha = save_llm_runs(records, client, args.k)
-    ok = sum(r.run.outcome.value == "SUCCESS" for r in records)
-    unsafe = sum(r.unsafe_action for r in records)
-    print(f"{len(records)} real LLM runs -> {LLM_RUNS_PATH}  sha256={sha}")
-    print(f"SUCCESS {ok}/{len(records)}  unsafe actions {unsafe}")
     return 0
 
 

@@ -21,7 +21,9 @@ def token_response(token: str = "tok-1", expires_in: int = 3600) -> httpx.Respon
 @respx.mock
 async def test_token_is_cached_across_requests():
     token_route = respx.post(f"{BASE}/v1/oauth2/token").mock(return_value=token_response())
-    respx.get(f"{BASE}/v2/checkout/orders/A").mock(return_value=httpx.Response(200, json={"id": "A"}))
+    respx.get(f"{BASE}/v2/checkout/orders/A").mock(
+        return_value=httpx.Response(200, json={"id": "A"})
+    )
     client = make_client()
     await client.get("/v2/checkout/orders/A")
     await client.get("/v2/checkout/orders/A")
@@ -64,7 +66,10 @@ async def test_401_triggers_one_token_refresh_and_retry():
         side_effect=[token_response("old"), token_response("new")]
     )
     respx.get(f"{BASE}/v2/checkout/orders/A").mock(
-        side_effect=[httpx.Response(401, json={"error": "invalid_token"}), httpx.Response(200, json={"id": "A"})]
+        side_effect=[
+            httpx.Response(401, json={"error": "invalid_token"}),
+            httpx.Response(200, json={"id": "A"}),
+        ]
     )
     client = make_client()
     result = await client.get("/v2/checkout/orders/A")
@@ -94,7 +99,9 @@ async def test_error_response_raises_paypal_error():
 @respx.mock
 async def test_bad_credentials_raise_paypal_error():
     respx.post(f"{BASE}/v1/oauth2/token").mock(
-        return_value=httpx.Response(401, json={"error": "invalid_client", "error_description": "Bad credentials"})
+        return_value=httpx.Response(
+            401, json={"error": "invalid_client", "error_description": "Bad credentials"}
+        )
     )
     client = make_client()
     with pytest.raises(PayPalError):
