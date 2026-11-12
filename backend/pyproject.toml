@@ -20,6 +20,9 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest", "pytest-asyncio", "respx", "ruff", "mypy", "pip-audit"]
 
+[tool.fastapi]
+entrypoint = "app.main:app"
+
 [tool.setuptools.packages.find]
 include = ["app*"]
 

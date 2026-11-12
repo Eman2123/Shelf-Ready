@@ -47,3 +47,20 @@ Add `--refund` to `allow` to also test the refund. Check each result in the sand
 | `PayPal 422` on create | read `debug_id` in the log and search it in the PayPal dashboard API calls |
 
 Paste any error here and it can be fixed.
+
+
+## Deploy the backend on FastAPI Cloud (optional)
+
+From the `backend` folder, with the venv active:
+
+```
+pip install fastapi-cloud-cli
+fastapi login
+fastapi deploy
+```
+
+The entrypoint (`app.main:app`) is set in `pyproject.toml`. In the FastAPI Cloud dashboard set
+`DATABASE_URL` (Neon), `ADMIN_TOKEN`, `APP_URL` (the frontend URL, used for CORS) and, when you
+have them, `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `PAYPAL_WEBHOOK_ID`. Run
+`alembic upgrade head` once from your own machine against the same `DATABASE_URL`. Then set
+`NEXT_PUBLIC_API_BASE_URL` on the frontend host to the new URL and redeploy it.
