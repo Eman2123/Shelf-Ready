@@ -1,0 +1,7 @@
+# Keep line endings identical on every machine. The benchmark fingerprint is a SHA-256 of the
+# raw bytes of these files, so Windows CRLF conversion would make `verify_benchmark` fail.
+* text=auto eol=lf
+*.json text eol=lf
+*.py text eol=lf
+*.png binary
+*.pdf binary
