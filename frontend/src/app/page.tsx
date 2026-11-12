@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { Icon, type IconName } from "@/components/ui";
+import { Logo } from "@/components/ui/logo";
+import { SiteFooter } from "@/components/shell/site-footer";
 import { recorded } from "@/lib/recorded";
 
 const REPO = "https://github.com/Eman2123/Shelf-Ready";
@@ -88,7 +90,7 @@ function SectionTitle({ kicker, children }: { kicker: string; children: React.Re
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-ink focus:p-3 focus:text-paper"
@@ -97,9 +99,7 @@ export default function Home() {
       </a>
       <header className="border-b-4 border-double border-ink">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4">
-          <Link href="/" className="font-display text-2xl font-bold tracking-tight">
-            Shelf Ready
-          </Link>
+          <Logo />
           <nav
             aria-label="Page"
             className="flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-semibold"
@@ -123,7 +123,7 @@ export default function Home() {
         </div>
       </header>
 
-      <main id="main" tabIndex={-1}>
+      <main id="main" tabIndex={-1} className="flex-1">
         {/* Hero */}
         <section className="mx-auto grid max-w-6xl gap-10 px-4 py-14 lg:grid-cols-[1.2fr_1fr] lg:py-20">
           <div>
@@ -302,16 +302,24 @@ export default function Home() {
             </span>
           </p>
         </section>
+
+        {/* Closing call to action */}
+        <section className="border-t-4 border-ink bg-ink text-paper">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 px-4 py-12">
+            <h2 className="max-w-xl font-display text-4xl font-bold leading-tight md:text-5xl">
+              See an agent buy safely in under a minute.
+            </h2>
+            <Link
+              href="/app/agent-test"
+              className="inline-flex min-h-11 items-center gap-2 bg-signal px-6 text-sm font-extrabold uppercase tracking-wide text-white hover:bg-paper hover:text-ink"
+            >
+              Run the agent test <Icon name="arrow" size={18} />
+            </Link>
+          </div>
+        </section>
       </main>
 
-      <footer className="border-t-4 border-double border-ink">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-6 text-sm">
-          <p className="font-display text-xl font-bold">Shelf Ready</p>
-          <p className="font-mono text-xs uppercase text-mute">
-            Fictional store: Tidewell Goods · scripted agents are not language models
-          </p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }
