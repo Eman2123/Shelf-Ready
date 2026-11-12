@@ -202,6 +202,8 @@ See [docs/SANDBOX.md](docs/SANDBOX.md): get sandbox credentials, then `make sand
 
 Backend (Render, from `render.yaml`) and frontend (Vercel) are separate.
 
+No credit card for Render? Use a free Hugging Face Space instead: see `deploy/huggingface/` (a Dockerfile and README that build the backend from this repo). Set the secrets in the Space settings, and the backend URL is `https://<user>-<space>.hf.space`.
+
 1. **Database:** create a free Postgres (Neon, Supabase or Render Postgres) and copy its connection string.
 2. **Backend:** Render, New, Blueprint, pick this repo. Fill the prompted variables: `DATABASE_URL`, `APP_URL` (your Vercel URL), `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET`, `PAYPAL_WEBHOOK_ID`. `ADMIN_TOKEN` is generated for you. The container runs `alembic upgrade head` on start, then serves on `$PORT`.
 3. **Webhook:** in the PayPal sandbox app, add a webhook to `https://<backend>/api/webhooks/paypal` for `CHECKOUT.ORDER.APPROVED`, `PAYMENT.CAPTURE.COMPLETED`, `PAYMENT.AUTHORIZATION.VOIDED`, `PAYMENT.CAPTURE.REFUNDED`. Put its id in `PAYPAL_WEBHOOK_ID`.
