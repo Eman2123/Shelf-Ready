@@ -1,3 +1,4 @@
+import { PageTitle } from "@/components/ui";
 import { ReportView } from "@/components/report/report-view";
 
 export const metadata = { title: "Report · ShelfReady" };
@@ -6,7 +7,7 @@ export const metadata = { title: "Report · ShelfReady" };
 export default function ReportPage() {
   return (
     <div>
-      <h1 className="font-display text-6xl font-bold leading-none tracking-tight">Report</h1>
+      <PageTitle icon="report">Report</PageTitle>
       <div className="mt-6">
         <ReportView />
       </div>

@@ -1,3 +1,4 @@
+import { PageTitle } from "@/components/ui";
 import { FixReviewView } from "@/components/fix-review/fix-review-view";
 
 export const metadata = { title: "Fix review · ShelfReady" };
@@ -6,7 +7,7 @@ export const metadata = { title: "Fix review · ShelfReady" };
 export default function FixReviewPage() {
   return (
     <div>
-      <h1 className="font-display text-6xl font-bold leading-none tracking-tight">Fix review</h1>
+      <PageTitle icon="fix">Fix review</PageTitle>
       <p className="mt-3 mb-6 max-w-xl">
         Every proposed value must be found in the source or come from the seller. Anything else is
         blocked.

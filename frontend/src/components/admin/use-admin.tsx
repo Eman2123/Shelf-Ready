@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { Button } from "@/components/ui";
 import { api, explain, getAdminToken, setAdminToken } from "@/lib/api/client";
 
+const DEMO_TOKEN = process.env.NEXT_PUBLIC_DEMO_ADMIN_TOKEN ?? "";
+
 /** Loads an admin route and exposes reload. `enabled` waits until a token is entered. */
 export function useAdminResource<T>(path: string, enabled: boolean) {
   const [data, setData] = useState<T | null>(null);
@@ -59,7 +61,10 @@ export function AdminGate({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const saved = getAdminToken();
+    // Optional judge access: NEXT_PUBLIC_DEMO_ADMIN_TOKEN is public by design. Use a throwaway
+    // token on a sandbox-only deployment and rotate it after judging.
+    const saved = getAdminToken() || DEMO_TOKEN;
+    if (saved && !getAdminToken()) setAdminToken(saved);
     setToken(saved);
     setDraft(saved);
     setReady(true);
