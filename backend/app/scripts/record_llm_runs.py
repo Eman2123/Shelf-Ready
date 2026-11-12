@@ -20,6 +20,7 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--k", type=int, default=1)
     ap.add_argument("--tasks", default="", help="comma list, e.g. A2,B4 (default: all 12)")
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--ping", action="store_true", help="one tiny real call, then stop")
     args = ap.parse_args(argv)
     cfg = load_llm_config()
     if cfg is None:
@@ -32,6 +33,14 @@ def main(argv: list[str] | None = None) -> int:
     if args.check:
         return 0
     client = ChatClient(cfg)
+    if args.ping:
+        try:
+            reply = client.chat([{"role": "user", "content": "Reply with the single word: ok"}])
+        except LLMError as exc:
+            print(f"LLM call failed: {exc}")
+            return 1
+        print(f"PING OK model={client.last_model} reply={reply.content!r}")
+        return 0
     ids = [t.strip() for t in args.tasks.split(",") if t.strip()] or None
     try:
         records = run_llm_suite(client, args.k, ids)

@@ -139,7 +139,9 @@ class ChatClient:
             self.send_json_mode = False
             resp = self._post(messages, tools, json_mode)
         if resp.status_code >= 400:
-            raise LLMError(f"provider returned HTTP {resp.status_code}")
+            raise LLMError(
+                f"provider returned HTTP {resp.status_code}: {_provider_message(resp, self.config.api_key)}"
+            )
         try:
             data = resp.json()
             msg = data["choices"][0]["message"]
@@ -155,3 +157,16 @@ class ChatClient:
             raise LLMError("provider reply was not a valid chat completion") from None
         self.last_model = data.get("model") or self.config.model
         return ChatReply(msg.get("content"), calls, self.last_model, data.get("usage", {}), msg)
+
+
+def _provider_message(resp: httpx.Response, secret: str) -> str:
+    """Short provider error text for diagnosis. Never includes request headers or the key."""
+    try:
+        data = resp.json()
+        err = data.get("error", data) if isinstance(data, dict) else data
+        text = err.get("message") if isinstance(err, dict) else str(err)
+        text = text or str(err)
+    except ValueError:
+        text = resp.text
+    text = " ".join(str(text).split()).replace(secret, "[redacted]")
+    return text[:300] or "(empty body)"
